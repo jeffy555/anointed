@@ -3237,30 +3237,6 @@ abstract class AppLocalizations {
   /// **'Exodus 1-2 - down the river to the princess'**
   String get kidsZoneAdventureMosesNileSubtitle;
 
-  /// Kids Zone adventure heroes_path: name
-  ///
-  /// In en, this message translates to:
-  /// **'Heroes Path'**
-  String get kidsZoneAdventureHeroesPathTitle;
-
-  /// Kids Zone adventure heroes_path: one-line description
-  ///
-  /// In en, this message translates to:
-  /// **'Coming soon — more Bible adventures'**
-  String get kidsZoneAdventureHeroesPathSubtitle;
-
-  /// Kids Zone adventure wise_kings: name
-  ///
-  /// In en, this message translates to:
-  /// **'Wise Kings'**
-  String get kidsZoneAdventureWiseKingsTitle;
-
-  /// Kids Zone adventure wise_kings: one-line description
-  ///
-  /// In en, this message translates to:
-  /// **'Coming soon'**
-  String get kidsZoneAdventureWiseKingsSubtitle;
-
   /// Kids Zone stop creation_intro: name
   ///
   /// In en, this message translates to:
@@ -3452,30 +3428,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Part the water, walk across, and send the chariots home'**
   String get kidsZoneStopMoses3Teaser;
-
-  /// Kids Zone stop heroes_2: name
-  ///
-  /// In en, this message translates to:
-  /// **'Young David'**
-  String get kidsZoneStopHeroes2Title;
-
-  /// Kids Zone stop heroes_2: one-line teaser
-  ///
-  /// In en, this message translates to:
-  /// **'Explore the pasture'**
-  String get kidsZoneStopHeroes2Teaser;
-
-  /// Kids Zone stop kings_1: name
-  ///
-  /// In en, this message translates to:
-  /// **'Solomon\'s Gift'**
-  String get kidsZoneStopKings1Title;
-
-  /// Kids Zone stop kings_1: one-line teaser
-  ///
-  /// In en, this message translates to:
-  /// **'Story adventure'**
-  String get kidsZoneStopKings1Teaser;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

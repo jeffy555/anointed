@@ -140,30 +140,6 @@ const List<KidsAdventure> kKidsAdventures = <KidsAdventure>[
       ),
     ],
   ),
-  KidsAdventure(
-    id: 'heroes_path',
-    color: Color(0xFF2196F3),
-    icon: Icons.shield_rounded,
-    stops: <KidsAdventureStop>[
-      KidsAdventureStop(
-        id: 'heroes_2',
-        icon: Icons.music_note_rounded,
-        gameKind: KidsZoneGameKind.explorer,
-      ),
-    ],
-  ),
-  KidsAdventure(
-    id: 'wise_kings',
-    color: Color(0xFFFF9800),
-    icon: Icons.auto_stories_rounded,
-    stops: <KidsAdventureStop>[
-      KidsAdventureStop(
-        id: 'kings_1',
-        icon: Icons.lightbulb_rounded,
-        gameKind: KidsZoneGameKind.storyPath,
-      ),
-    ],
-  ),
 ];
 
 KidsAdventureStop? kidsZoneStopById(String stopId) {

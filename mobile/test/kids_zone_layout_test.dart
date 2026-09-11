@@ -110,7 +110,6 @@ void main() {
     'siddim_intro', 'siddim_1', 'siddim_2', 'siddim_3',
     'ark_intro', 'ark_1', 'ark_2', 'ark_3',
     'moses_intro', 'moses_1', 'moses_2', 'moses_3',
-    'heroes_2', 'kings_1',
   ];
 
   // Physical pixels paired with a dpr that yields the logical size named.

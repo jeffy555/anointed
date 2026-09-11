@@ -20,8 +20,6 @@ String kidsZoneAdventureTitle(AppLocalizations l10n, String id) {
     'battle_of_siddim' => l10n.kidsZoneAdventureBattleOfSiddimTitle,
     'noahs_ark' => l10n.kidsZoneAdventureNoahsArkTitle,
     'moses_nile' => l10n.kidsZoneAdventureMosesNileTitle,
-    'heroes_path' => l10n.kidsZoneAdventureHeroesPathTitle,
-    'wise_kings' => l10n.kidsZoneAdventureWiseKingsTitle,
     _ => '',
   };
 }
@@ -38,8 +36,6 @@ String kidsZoneAdventureSubtitle(AppLocalizations l10n, String id) {
     'battle_of_siddim' => l10n.kidsZoneAdventureBattleOfSiddimSubtitle,
     'noahs_ark' => l10n.kidsZoneAdventureNoahsArkSubtitle,
     'moses_nile' => l10n.kidsZoneAdventureMosesNileSubtitle,
-    'heroes_path' => l10n.kidsZoneAdventureHeroesPathSubtitle,
-    'wise_kings' => l10n.kidsZoneAdventureWiseKingsSubtitle,
     _ => '',
   };
 }
@@ -68,8 +64,6 @@ String kidsZoneStopTitle(AppLocalizations l10n, String id) {
     'moses_1' => l10n.kidsZoneStopMoses1Title,
     'moses_2' => l10n.kidsZoneStopMoses2Title,
     'moses_3' => l10n.kidsZoneStopMoses3Title,
-    'heroes_2' => l10n.kidsZoneStopHeroes2Title,
-    'kings_1' => l10n.kidsZoneStopKings1Title,
     _ => '',
   };
 }
@@ -98,8 +92,6 @@ String kidsZoneStopTeaser(AppLocalizations l10n, String id) {
     'moses_1' => l10n.kidsZoneStopMoses1Teaser,
     'moses_2' => l10n.kidsZoneStopMoses2Teaser,
     'moses_3' => l10n.kidsZoneStopMoses3Teaser,
-    'heroes_2' => l10n.kidsZoneStopHeroes2Teaser,
-    'kings_1' => l10n.kidsZoneStopKings1Teaser,
     _ => '',
   };
 }

@@ -867,22 +867,6 @@
   "@kidsZoneAdventureMosesNileSubtitle": {
     "description": "Kids Zone adventure moses_nile: one-line description"
   },
-  "kidsZoneAdventureHeroesPathTitle": "Heroes Path",
-  "@kidsZoneAdventureHeroesPathTitle": {
-    "description": "Kids Zone adventure heroes_path: name"
-  },
-  "kidsZoneAdventureHeroesPathSubtitle": "Coming soon — more Bible adventures",
-  "@kidsZoneAdventureHeroesPathSubtitle": {
-    "description": "Kids Zone adventure heroes_path: one-line description"
-  },
-  "kidsZoneAdventureWiseKingsTitle": "Wise Kings",
-  "@kidsZoneAdventureWiseKingsTitle": {
-    "description": "Kids Zone adventure wise_kings: name"
-  },
-  "kidsZoneAdventureWiseKingsSubtitle": "Coming soon",
-  "@kidsZoneAdventureWiseKingsSubtitle": {
-    "description": "Kids Zone adventure wise_kings: one-line description"
-  },
 
   "kidsZoneStopCreationIntroTitle": "Introduction",
   "@kidsZoneStopCreationIntroTitle": {
@@ -1011,21 +995,5 @@
   "kidsZoneStopMoses3Teaser": "Part the water, walk across, and send the chariots home",
   "@kidsZoneStopMoses3Teaser": {
     "description": "Kids Zone stop moses_3: one-line teaser"
-  },
-  "kidsZoneStopHeroes2Title": "Young David",
-  "@kidsZoneStopHeroes2Title": {
-    "description": "Kids Zone stop heroes_2: name"
-  },
-  "kidsZoneStopHeroes2Teaser": "Explore the pasture",
-  "@kidsZoneStopHeroes2Teaser": {
-    "description": "Kids Zone stop heroes_2: one-line teaser"
-  },
-  "kidsZoneStopKings1Title": "Solomon's Gift",
-  "@kidsZoneStopKings1Title": {
-    "description": "Kids Zone stop kings_1: name"
-  },
-  "kidsZoneStopKings1Teaser": "Story adventure",
-  "@kidsZoneStopKings1Teaser": {
-    "description": "Kids Zone stop kings_1: one-line teaser"
   }
 }

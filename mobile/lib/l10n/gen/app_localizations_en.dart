@@ -1756,18 +1756,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get kidsZoneAdventureMosesNileSubtitle => 'Exodus 1-2 - down the river to the princess';
 
   @override
-  String get kidsZoneAdventureHeroesPathTitle => 'Heroes Path';
-
-  @override
-  String get kidsZoneAdventureHeroesPathSubtitle => 'Coming soon — more Bible adventures';
-
-  @override
-  String get kidsZoneAdventureWiseKingsTitle => 'Wise Kings';
-
-  @override
-  String get kidsZoneAdventureWiseKingsSubtitle => 'Coming soon';
-
-  @override
   String get kidsZoneStopCreationIntroTitle => 'Introduction';
 
   @override
@@ -1862,16 +1850,4 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get kidsZoneStopMoses3Teaser => 'Part the water, walk across, and send the chariots home';
-
-  @override
-  String get kidsZoneStopHeroes2Title => 'Young David';
-
-  @override
-  String get kidsZoneStopHeroes2Teaser => 'Explore the pasture';
-
-  @override
-  String get kidsZoneStopKings1Title => 'Solomon\'s Gift';
-
-  @override
-  String get kidsZoneStopKings1Teaser => 'Story adventure';
 }
