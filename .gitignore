@@ -20,6 +20,12 @@ backend/anointed_dev.db
 
 # ---------------------------------------------------------------- local dev tooling (not source)
 tools/
+# A second Flutter SDK checkout that ended up at the project root. It has its own
+# .git, so `git add .` recorded it as a gitlink (a bare commit-SHA pointer, no
+# actual files) instead of source — shows up on GitHub as a broken folder icon,
+# and a fresh clone gets an empty directory. tools/flutter-win is the real SDK
+# every build script uses; this one is untracked, not deleted, in case it matters.
+.flutter/
 
 # ---------------------------------------------------------------- build output / large binaries
 dist/*.apk
