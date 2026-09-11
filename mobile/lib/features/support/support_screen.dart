@@ -319,6 +319,14 @@ class _SupportScreenState extends State<SupportScreen> {
                 children: <Widget>[
                   DropdownButtonFormField<SupportCategory>(
                     value: _category,
+                    // Without this the selected label is laid out at its
+                    // intrinsic width next to the arrow in a `spaceBetween`
+                    // Row, with nothing allowed to shrink -- so a long category
+                    // ran straight under the arrow instead of ellipsising. It
+                    // overflows at the in-app "Large text" setting alone, and
+                    // any locale with longer category names would do it at
+                    // normal size too.
+                    isExpanded: true,
                     decoration: InputDecoration(
                       labelText: l10n.supportCategoryLabel,
                     ),
@@ -327,7 +335,10 @@ class _SupportScreenState extends State<SupportScreen> {
                           (SupportCategory value) =>
                               DropdownMenuItem<SupportCategory>(
                             value: value,
-                            child: Text(value.label(l10n)),
+                            child: Text(
+                              value.label(l10n),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         )
                         .toList(),

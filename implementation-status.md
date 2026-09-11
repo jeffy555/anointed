@@ -1,6 +1,6 @@
 # Anointed — Implementation Status
 
-**Last updated:** 10 Sep 2026  
+**Last updated:** 11 Sep 2026
 **Gate:** `approval.json` approved  
 **Audits:** `compliance-report.md`, `flow-validation.md` complete · QA/production-readiness pass 10 Sep 2026
 
@@ -48,6 +48,153 @@ requirement it named was already met, and measuring the build proved it.
 
 Still open: **N2** alone (audio re-encode, blocked on tooling — see `scripts/encode_kids_zone_audio.py`).
 `flutter analyze` now reports **no issues at all**, down from 12.
+
+---
+
+## Profile page investigation — 11 Sep 2026
+
+Two device screenshots from the user (Settings, Help & Support) surfaced two real defects outside
+the Kids-Zone-scoped layout sweep above — Settings/Support/Profile were never in that audit's scope.
+
+| ID | Finding | Status | Notes |
+|----|---------|--------|-------|
+| P1 | Appearance row rendered "Appearance" and "Match device" one letter per line | **implemented** | Root cause confirmed with a reproduction test *before* fixing: `ListTile(title: ..., trailing: SegmentedButton(...))` — Flutter's own `ListTile` throws `"Trailing widget consumes entire tile width"` for a 3-segment button with real-word labels, and it threw **even at default text scale (1.0x) on an ordinary 360dp phone**, not only under the in-app Large Text toggle. In a profile/release build with no debug overlay, what got painted instead of that assertion was the letter-per-line garbling in the screenshot. Fixed by extracting a public `AppearanceRow` widget (`settings_screen.dart`) that stacks the title above the segmented picker instead of squeezing them into one row — same "stack rather than squeeze" approach as the Kids Zone layout fixes above. `test/settings_appearance_row_test.dart` reproduces the original assertion and confirms the fix across 5 scales (1.0–2.4) |
+| P2 | "ANOINTED" wordmark painted under the status bar on Help & Support | **implemented** | `ParchmentScreenHeader` (shared by Leaderboard, Practice, Profile and Support) had a fixed 14px top padding and no `SafeArea` anywhere above it on Support specifically — the only one of the four reached as an independently-pushed route rather than through `HomeShell`'s already-safe-area'd tab stack. Same root cause as the earlier level-map fix (`targetSdk` 35+ draws edge-to-edge unconditionally), on a screen that fix never reached. Fixed once in the shared widget: it now adds `MediaQuery.paddingOf(context).top` to its own padding, which is self-cancelling for the three tab screens (an ancestor `SafeArea` already zeroed that value for them) and adds the real inset only where nothing already has. No per-screen changes needed, and no future screen using this header can reintroduce the bug. `test/parchment_screen_header_test.dart` asserts both cases explicitly, including that the three protected screens do not get a doubled-up gap |
+
+Also checked while in the area, both already correct: `account_deletion_screen.dart` (real `AppBar` +
+its own `SafeArea`) and `settings_screen.dart`'s own top bar (real `AppBar`, self-insets).
+
+**Verification:** `flutter analyze` — no issues found. `flutter test` — **282 pass** (was 275).
+
+---
+
+## Kids Zone progress sync — 11 Sep 2026
+
+Kids Zone was the only player-visible progress with **no server copy**: stars and completed stops
+lived in the device's `SharedPreferences` and nowhere else. `clearAccountScopedState()` wipes those on
+**sign-out**, not just uninstall — so the J5 fix above (correct for a shared family device) was
+destroying a child's record rather than re-syncing it. It was also the part of the app aimed at
+children, who are the most likely to be on a shared or borrowed phone.
+
+**Shape: one endpoint, and it merges.** `POST /v1/kids-zone/progress/sync` takes the device's whole
+local set and returns the union, keeping the higher star rating per stop. Neither side is
+authoritative, so neither can erase the other. Two consequences worth keeping:
+
+- **No pending-write queue on the device.** A failed sync needs no bookkeeping, because the next one
+  carries the same state again. This is what lets Kids Zone stay fully playable offline — the hub
+  paints from local storage synchronously and never shows a child a spinner or an empty board.
+- **An empty payload cannot clear the server.** That is the sign-out case exactly: a freshly wiped
+  device posts `[]` on next sign-in, and must receive its stars back rather than delete them.
+
+| ID | Change | Status | Notes |
+|----|--------|--------|-------|
+| K1 | `kids_zone_stop_completions` table | **implemented** | `(user_id, stop_id)` PK, `adventure_id`, `best_stars`, `completions_count`, first/last timestamps. Migration `af1621646cd3`, applied to Neon |
+| K2 | `POST /v1/kids-zone/progress/sync` | **implemented** | `ConsentedUser`-gated like every other gameplay route, so a pending-consent under-13 account cannot write. Star range clamped by the schema; payload capped at 200 stops so one request cannot write unbounded rows |
+| K3 | `KidsZoneRepository` + offline-first wiring | **implemented** | Syncs on hub entry (restores after a wipe/reinstall/new phone) and after each stop completes (not awaited — the celebration screen must not wait on the network). Failure returns null and local progress stands |
+| K4 | Sign-out flushes before the wipe | **implemented** | `SessionController.signOut()` now syncs *first*. Without this, a child who played offline and signed out once back online would still lose everything: the device copy is deleted and the server never heard about it. This ordering is the whole data-loss guard, and is pinned by a test |
+| K5 | `kidsZoneAdventureForStop` | **implemented** | The payload needs an adventure id per stop; deriving it from the catalogue rather than storing it means progress saved *before* sync existed still uploads, with nothing to migrate |
+
+**Deliberate difference from Main Journey, stated in the model docstring so nobody reads this as a
+precedent:** `game.py` refuses a client-supplied score because ranked play is server-scored. Kids Zone
+mini-games run entirely on-device and have no leaderboard or ranked standing, so the client is the
+only thing that *can* report a star. The server clamps the range and keeps the best — that is the
+whole trust model here, and it must not be copied to the ranked path.
+
+**Verification:** backend **114 pass** (was 106; 8 new in `tests/test_kids_zone.py`). Mobile
+**306 pass** (was 298; 8 new in `test/kids_zone_sync_test.dart`), `flutter analyze lib test` clean.
+Live route confirmed registered against the running server (401 unauthenticated, vs 404 for an
+unknown path under the same prefix). **Not yet exercised end-to-end on the device** — the phone was
+locked when the build landed.
+
+> **Backend test suite reads the developer `.env`.** 13 of the failures on the first full run were
+> caused by local config leaking into the test process — `FREE_TIER_MAX_LEVEL=100` broke every
+> paywall assertion and `GOOGLE_OAUTH_CLIENT_IDS` broke the OAuth dev-fallback tests. Nothing to do
+> with this change (`FREE_TIER_MAX_LEVEL=5 GOOGLE_OAUTH_CLIENT_IDS= pytest` is green at 114), but
+> `tests/conftest.py` should pin these settings so a developer's `.env` cannot redefine what passing
+> means. Not fixed here.
+
+---
+
+## Palette unification — 11 Sep 2026
+
+User report: *"Settings view in mobile phone is totally different shades not specific to the app …
+and even the login screen as well. In Help and Support … Contact us view needs to be proper and not
+overlapped."* Two independent causes, both app-wide rather than screen-local.
+
+**Cause 1 — two design systems on one screen.** The app carried an unused second identity: an
+arcade-style palette (`AppColors`, orange `#FF6D00` / purple `#7C4DFF`) driving the global
+`ThemeData` and the full-screen `BrandBackground`, while every branded screen painted itself from
+`ParchmentColors`. The branded screens hide the mismatch by covering the background with an opaque
+`ParchmentColors.page`; Settings and Welcome use a transparent `Scaffold` (the theme sets
+`scaffoldBackgroundColor: Colors.transparent`), so on those the coral→orchid→sky-blue gradient and
+its four coloured orbs showed through — which is what "totally different shades" was.
+
+| ID | Change | Status | Notes |
+|----|--------|--------|-------|
+| T1 | `ThemeData` rebuilt on Parchment tokens | **implemented** | `theme.dart` now derives its `ColorScheme` and every component theme from `ParchmentColors` (ink primary / gold secondary / page surface / cream cards), matching the treatments `ParchmentPrimaryButton` and `ParchmentCard` already used. Fixes Settings' orange `AppBar` and reaches consent, onboarding, IAP and the gameplay chrome in the same change |
+| T2 | `BrandBackground` reskinned | **implemented** | Arcade gradient + four saturated orbs → a parchment wash (cream→page→strip) with soft radial mottling. This is the single change most responsible for the reported look, since it is the literal background of every transparent-scaffold screen |
+| T3 | `dark()` resolves to the parchment palette | **implemented** | Deliberate: the branded screens hardcode a light parchment surface, so a genuinely dark Material theme only puts dark widgets back on cream paper. **Known consequence — the Settings "Appearance" picker is now cosmetic.** Either remove the row or design a real parchment-night palette; not decided yet |
+| T4 | Login screen reskinned | **implemented** | `welcome_screen.dart`'s hero tile (was `AppColors.heroGradient` + white icon) → cream with a gold border and gold icon. `auth_buttons.dart` gradient buttons → solid ink-on-gold (Google) and gold-on-cream (Apple), the same three weights used elsewhere |
+| T5 | `NoticeBanner` tones aligned | **implemented** | `state_views.dart` now uses the same four tones as `ParchmentNoticeBanner`, so the two banner widgets no longer disagree. The old `AppColors.success` neon `#00E676` also could not carry its own text on cream |
+
+**Cause 2 — the Contact Us overlap was a genuine layout bug, not a colour problem.**
+`DropdownButtonFormField` defaults to `isExpanded: false`, which lays the selected label out at its
+intrinsic width beside the arrow inside a `MainAxisAlignment.spaceBetween` `Row` where nothing is
+allowed to shrink. The category label therefore ran under the arrow rather than ellipsising.
+Measured overflow at 360dp: **50px at text scale 1.25** (the in-app Large Text toggle *alone*), 140px
+at 1.6, 345px at 2.4. Fixed with `isExpanded: true` + `TextOverflow.ellipsis` in `support_screen.dart`
+— the app's only dropdown, so there is no second instance of this.
+
+**One trap worth recording:** the theme deliberately does *not* set `ThemeData.fontFamily`. It is
+applied through `TextTheme.apply`, whose `fontFamily` argument **wins** over a style's own
+(`TextStyle.apply` does `fontFamily ?? _fontFamily`) — so setting it to Karla would have silently
+repainted every Cormorant heading in Karla, app-wide. Each style names its family instead. Also
+corrected: the display/headline styles asked for `w800`, a weight CormorantGaramond does not ship
+(pubspec declares 500/600/700 only), so they were being synthesised.
+
+**Verification:** `flutter analyze lib test` — no issues. `flutter test` — **298 pass** (was 282).
+New `test/app_theme_parchment_test.dart` (16 tests) pins the palette, every `InputDecoration` text
+slot to an explicit colour, the Cormorant/Karla split, the no-synthesised-weight rule, and the
+Contact Us form shape across four text scales — that last group was confirmed to fail on the
+pre-fix code before being made to pass.
+
+### On-device verification — 11 Sep 2026
+
+Installed on the A069P (`00331765D002838`) and walked through. The device is in **night mode**, which
+made T3 load-bearing rather than theoretical: without it every Material widget on those cream screens
+would have rendered dark. Five further defects were only visible on a real device.
+
+| ID | Finding | Status | Notes |
+|----|---------|--------|-------|
+| D1 | App hung on the splash — "Getting things ready…" forever | **implemented** | `AppConfig.apiBaseUrl` falls back to `http://10.0.2.2:8000`, which is the **Android emulator's** alias for the host machine and does not resolve on a physical phone. Almost certainly the same "Main Journey is still loading" reported earlier in the session. Build with `--dart-define=API_BASE_URL=http://127.0.0.1:8000` alongside `adb reverse tcp:8000 tcp:8000` |
+| D2 | Cleartext to loopback was blocked | **implemented** | Even with D1's URL the request never left the device: cleartext http is refused by default from targetSdk 28. Added a `network_security_config` permitting **loopback only**, in the `profile` source set, so it cannot merge into a release build |
+| D3 | Status-bar clock and icons painted white on cream | **implemented** | Only `AppBarTheme.systemOverlayStyle` set this, and the branded screens (splash, level map, profile, leaderboard, practice) have no `AppBar`. On a night-mode phone Android chose light icons. Now set once in `main()` |
+| D4 | Bottom tab bar drew a square, circle and diamond | **implemented** | **N4 was only half-fixed.** That finding was recorded against the tablet navigation rail; the phone bar is a different widget (`ParchmentTabBar`), and its `_iconForIndex` hand-painted geometric shapes — so on the layout nearly every user sees, three of four tabs still said nothing about where they led. Now uses the same outline/filled Material pairs as the rail; ~125 lines of `_TabIcon`/`_PersonIconPainter` deleted |
+| D5 | `PlayModeChooser` put Kids Zone blue ink on the parchment map | **implemented** | The chooser sits on the level map but styled itself with `KidsZoneText`/`KidsZoneColors` throughout. Reskinned to Parchment; the green accent on the Kids Zone box is kept, since that signals a destination rather than styling the map |
+| D6 | "Levels 101–100 locked" — an empty range | **implemented** | When the free tier covers every level, `lockedFrom` is `totalLevels + 1`, and the row still rendered, next to an "Unlock all" that would buy nothing. Guarded at the call site |
+
+**Verified by eye after the fixes:** splash, level map, Profile, Settings, Help & Support incl. the
+Contact Us form, the sign-out dialog, and the Welcome/login screen.
+
+**Backend restarted 11 Sep 2026** (was running since 10 Sep 20:15, predating the `.env` edit).
+`settings.free_tier_max_level` now reads **100**, so all levels are playable. This also produced the
+exact configuration D6 guards — `lockedFrom` 101 vs `totalLevels` 100 — and the unlock row correctly
+renders nothing.
+
+**Reaching the login screen, for anyone repeating this:** signing out lands on Welcome but Google
+auto-sign-in fires immediately and bounces straight back to the map (visible in the backend log as
+`POST /v1/auth/signout` followed at once by `POST /v1/auth/oauth`). Drop the reverse tunnel first
+(`adb reverse --remove tcp:8000`) so the re-auth cannot complete, and the screen stays put.
+
+### Open, not actioned
+
+- **The Settings "Appearance" picker is now inert** (see T3). Remove the row, or design a real
+  parchment-night palette. Needs a product decision.
+- **"Continue with Google" uses a monochrome Material glyph** (`Icons.g_mobiledata_rounded`), now
+  gold on ink. Google's Sign-In branding guidelines require their official multi-colour mark on a
+  light button, so this is a **Play Store submission risk**. Pre-existing — the palette work only
+  changed its colour — but it needs settling before release, and the fix will fight the parchment
+  treatment, so it wants a deliberate design call rather than a quiet recolour.
 
 ---
 

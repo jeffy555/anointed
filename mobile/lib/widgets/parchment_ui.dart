@@ -30,7 +30,26 @@ class ParchmentScreenHeader extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(18, 14, 18, 12),
+        // The top inset adds the real status-bar height on top of the fixed
+        // 14px — not a fallback, the default case. This header is meant to sit
+        // as the very first thing in a screen's body, and targeting SDK 35+
+        // means Android draws edge-to-edge whether the screen asks for it or
+        // not: with no SafeArea anywhere above it, "ANOINTED" painted straight
+        // under the clock and status icons (support_screen.dart, the one
+        // screen using this header as a standalone route rather than inside
+        // HomeShell's tab stack).
+        //
+        // Self-cancelling where it isn't needed: for a header already sitting
+        // inside an ancestor SafeArea — the three HomeShell tabs that also use
+        // this header — that ancestor already zeroed the inset for everything
+        // below it, so MediaQuery.paddingOf(context).top reads 0 right here
+        // and this adds nothing. One fix, no call site has to remember it.
+        padding: EdgeInsets.fromLTRB(
+          18,
+          14 + MediaQuery.paddingOf(context).top,
+          18,
+          12,
+        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[

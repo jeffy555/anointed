@@ -19,6 +19,28 @@ class DeviceContext {
     required this.platform,
   });
 
+  /// Fixed metadata for tests. [resolve] reads `package_info_plus` and
+  /// `device_info_plus`, which need platform channels a unit test has no reason
+  /// to stand up just to give [ApiClient] its headers.
+  @visibleForTesting
+  factory DeviceContext.forTest({
+    String installId = 'test-install',
+    String appVersion = '1.0.0',
+    String buildNumber = '1',
+    String osVersion = 'test',
+    String deviceType = 'phone',
+    String platform = 'android',
+  }) {
+    return DeviceContext._(
+      installId: installId,
+      appVersion: appVersion,
+      buildNumber: buildNumber,
+      osVersion: osVersion,
+      deviceType: deviceType,
+      platform: platform,
+    );
+  }
+
   final String installId;
   final String appVersion;
   final String buildNumber;

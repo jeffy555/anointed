@@ -238,6 +238,21 @@ class LocalStore {
     }
   }
 
+  /// Applies a merged progress set from the server.
+  ///
+  /// Replaces rather than merges, because the caller has already merged: the
+  /// sync endpoint is given the device's whole local set and returns the union,
+  /// so what arrives here is a superset of what is already stored. Writing it
+  /// wholesale is what restores a child's stars after the sign-out wipe, and
+  /// after a reinstall or a move to a new phone.
+  Future<void> applyKidsZoneProgress(Map<String, int> starsByStopId) async {
+    await _prefs.setStringList(
+      _kKidsZoneCompletedStops,
+      starsByStopId.keys.toList(),
+    );
+    await _writeJson(_kKidsZoneStars, starsByStopId);
+  }
+
   /// Whether a Kids Zone how-to-play card has already been shown. Tutorials
   /// appear unprompted only the first time; after that they stay behind a help
   /// button so a returning child can look again without being lectured.

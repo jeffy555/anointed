@@ -708,17 +708,31 @@ class ParchmentTabBar extends StatelessWidget {
     );
   }
 
+  /// The same outline/filled pairs the tablet navigation rail uses, so the two
+  /// layouts name the tabs the same way.
+  ///
+  /// This used to draw a square, a circle, a diamond and a person glyph by hand.
+  /// Three of the four said nothing about where they led — the tab bar was
+  /// carrying the exact defect that was fixed on the rail (where all four drew
+  /// one repeated circle) and missed here, which is the layout nearly every
+  /// user actually sees.
+  static const List<(IconData, IconData)> _icons = <(IconData, IconData)>[
+    (Icons.map_outlined, Icons.map_rounded),
+    (Icons.emoji_events_outlined, Icons.emoji_events_rounded),
+    (Icons.school_outlined, Icons.school_rounded),
+    (Icons.person_outline_rounded, Icons.person_rounded),
+  ];
+
   Widget _iconForIndex(int index, bool selected) {
-    switch (index) {
-      case 0:
-        return _TabIcon.square(filled: selected);
-      case 1:
-        return _TabIcon.circle(filled: selected);
-      case 2:
-        return _TabIcon.diamond(filled: selected);
-      default:
-        return _TabIcon.person(filled: selected);
-    }
+    final (IconData outline, IconData filled) =
+        _icons[index.clamp(0, _icons.length - 1)];
+    return Icon(
+      selected ? filled : outline,
+      size: 20,
+      color: selected
+          ? ParchmentColors.current
+          : ParchmentColors.inkMuted(0.45),
+    );
   }
 }
 
@@ -772,129 +786,4 @@ class _ParchmentTabItem extends StatelessWidget {
       ),
     );
   }
-}
-
-class _TabIcon extends StatelessWidget {
-  const _TabIcon._({required this.child});
-
-  factory _TabIcon.square({required bool filled}) {
-    return _TabIcon._(
-      child: Container(
-        width: 18,
-        height: 18,
-        decoration: BoxDecoration(
-          color: filled ? ParchmentColors.current : Colors.transparent,
-          borderRadius: BorderRadius.circular(4),
-          border: filled
-              ? null
-              : Border.all(
-                  color: ParchmentColors.inkMuted(0.35),
-                  width: 2,
-                ),
-        ),
-      ),
-    );
-  }
-
-  factory _TabIcon.circle({required bool filled}) {
-    return _TabIcon._(
-      child: Container(
-        width: 18,
-        height: 18,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: filled ? ParchmentColors.current : Colors.transparent,
-          border: filled
-              ? null
-              : Border.all(
-                  color: ParchmentColors.inkMuted(0.35),
-                  width: 2,
-                ),
-        ),
-      ),
-    );
-  }
-
-  factory _TabIcon.diamond({required bool filled}) {
-    return _TabIcon._(
-      child: Transform.rotate(
-        angle: math.pi / 4,
-        child: Container(
-          width: 13,
-          height: 13,
-          decoration: BoxDecoration(
-            color: filled ? ParchmentColors.current : Colors.transparent,
-            borderRadius: BorderRadius.circular(2),
-            border: filled
-                ? null
-                : Border.all(
-                    color: ParchmentColors.inkMuted(0.35),
-                    width: 2,
-                  ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  factory _TabIcon.person({required bool filled}) {
-    return _TabIcon._(
-      child: SizedBox(
-        width: 18,
-        height: 18,
-        child: CustomPaint(
-          painter: _PersonIconPainter(
-            color: filled ? ParchmentColors.current : ParchmentColors.inkMuted(0.35),
-            filled: filled,
-          ),
-        ),
-      ),
-    );
-  }
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) => child;
-}
-
-class _PersonIconPainter extends CustomPainter {
-  const _PersonIconPainter({required this.color, required this.filled});
-
-  final Color color;
-  final bool filled;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..color = color
-      ..style = filled ? PaintingStyle.fill : PaintingStyle.stroke
-      ..strokeWidth = 2;
-    canvas.drawCircle(
-      Offset(size.width / 2, size.height * 0.32),
-      size.width * 0.18,
-      paint,
-    );
-    if (filled) {
-      canvas.drawArc(
-        Rect.fromLTWH(2, size.height * 0.52, size.width - 4, size.height * 0.42),
-        math.pi,
-        math.pi,
-        true,
-        paint,
-      );
-    } else {
-      canvas.drawArc(
-        Rect.fromLTWH(2, size.height * 0.5, size.width - 4, size.height * 0.46),
-        math.pi * 1.05,
-        math.pi * 0.9,
-        false,
-        paint,
-      );
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant _PersonIconPainter oldDelegate) =>
-      color != oldDelegate.color || filled != oldDelegate.filled;
 }

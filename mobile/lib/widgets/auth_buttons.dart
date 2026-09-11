@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../core/tokens.dart';
+import '../features/map/parchment_codex_tokens.dart';
 import '../l10n/gen/app_localizations.dart';
 
 /// The shared auth button stack from design-spec §10, used by both M-03 and
@@ -92,16 +93,23 @@ class _AuthButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    // Ink-on-gold for the lead provider, gold-on-cream for the second, and a
+    // hairline outline for phone -- the same three weights ParchmentPrimaryButton
+    // and ParchmentSecondaryButton use elsewhere, so the first screen a new user
+    // sees is already speaking the app's language.
+    final Color foreground = switch (style) {
+      _AuthButtonStyle.primary => ParchmentColors.goldLight,
+      _AuthButtonStyle.secondary => ParchmentColors.cream,
+      _AuthButtonStyle.outline => ParchmentColors.ink,
+    };
+
     final Widget leading = busy
         ? SizedBox(
             width: 20,
             height: 20,
             child: CircularProgressIndicator(
               strokeWidth: 2,
-              color: style == _AuthButtonStyle.outline
-                  ? theme.colorScheme.secondary
-                  : theme.colorScheme.onPrimary,
+              color: foreground,
             ),
           )
         : Icon(icon, size: 22);
@@ -117,17 +125,17 @@ class _AuthButton extends StatelessWidget {
 
     switch (style) {
       case _AuthButtonStyle.primary:
-        return _GradientButton(
+        return _SolidButton(
           onPressed: onPressed,
-          gradient: AppColors.primaryButtonGradient,
-          shadowColor: AppColors.primary,
+          background: ParchmentColors.ink,
+          foreground: foreground,
           child: content,
         );
       case _AuthButtonStyle.secondary:
-        return _GradientButton(
+        return _SolidButton(
           onPressed: onPressed,
-          gradient: AppColors.secondaryButtonGradient,
-          shadowColor: AppColors.secondary,
+          background: ParchmentColors.gold,
+          foreground: foreground,
           child: content,
         );
       case _AuthButtonStyle.outline:
@@ -136,34 +144,25 @@ class _AuthButton extends StatelessWidget {
   }
 }
 
-class _GradientButton extends StatelessWidget {
-  const _GradientButton({
+class _SolidButton extends StatelessWidget {
+  const _SolidButton({
     required this.onPressed,
-    required this.gradient,
-    required this.shadowColor,
+    required this.background,
+    required this.foreground,
     required this.child,
   });
 
   final VoidCallback? onPressed;
-  final Gradient gradient;
-  final Color shadowColor;
+  final Color background;
+  final Color foreground;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        gradient: gradient,
+        color: onPressed == null ? background.withOpacity(0.45) : background,
         borderRadius: AppRadius.cardRadius,
-        boxShadow: onPressed == null
-            ? null
-            : <BoxShadow>[
-                BoxShadow(
-                  color: shadowColor.withOpacity(0.45),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
       ),
       child: Material(
         color: Colors.transparent,
@@ -172,13 +171,16 @@ class _GradientButton extends StatelessWidget {
           borderRadius: AppRadius.cardRadius,
           child: SizedBox(
             height: kMinTapTarget,
-            child: DefaultTextStyle.merge(
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w800,
-                fontSize: AppTypeScale.md,
+            child: IconTheme.merge(
+              data: IconThemeData(color: foreground),
+              child: DefaultTextStyle.merge(
+                style: ParchmentText.karla(
+                  size: AppTypeScale.md,
+                  weight: FontWeight.w700,
+                  color: foreground,
+                ),
+                child: Center(child: child),
               ),
-              child: Center(child: child),
             ),
           ),
         ),

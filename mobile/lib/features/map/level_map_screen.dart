@@ -240,13 +240,19 @@ class _LevelMapScreenState extends State<LevelMapScreen> {
                     ),
                   ),
                 ParchmentJourneyCard(progress: progress),
-                const SizedBox(height: AppSpacing.md),
-                ParchmentUnlockRow(
-                  hasUnlock: map.hasUnlock,
-                  lockedFrom: lockedFrom,
-                  totalLevels: map.totalLevels,
-                  onUnlockAll: _unlockAll,
-                ),
+                // Nothing to advertise when the free tier already covers every
+                // level: lockedFrom is totalLevels + 1, so the row rendered the
+                // empty range "Levels 101-100 locked" next to an "Unlock all"
+                // that would buy nothing.
+                if (map.hasUnlock || lockedFrom <= map.totalLevels) ...<Widget>[
+                  const SizedBox(height: AppSpacing.md),
+                  ParchmentUnlockRow(
+                    hasUnlock: map.hasUnlock,
+                    lockedFrom: lockedFrom,
+                    totalLevels: map.totalLevels,
+                    onUnlockAll: _unlockAll,
+                  ),
+                ],
                 if (!session.canPlay) ...<Widget>[
                   const SizedBox(height: AppSpacing.md),
                   NoticeBanner(

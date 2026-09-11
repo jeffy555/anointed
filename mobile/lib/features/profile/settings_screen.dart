@@ -154,31 +154,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Card(
             child: Column(
               children: <Widget>[
-                ListTile(
-                  leading: const Icon(Icons.brightness_6_outlined),
-                  title: Text(l10n.settingsThemeMode),
-                  subtitle: Text(_themeLabel(l10n, settings.themeMode)),
-                  trailing: SegmentedButton<ThemeMode>(
-                    showSelectedIcon: false,
-                    segments: <ButtonSegment<ThemeMode>>[
-                      ButtonSegment<ThemeMode>(
-                        value: ThemeMode.system,
-                        label: Text(l10n.settingsThemeSystem),
-                      ),
-                      ButtonSegment<ThemeMode>(
-                        value: ThemeMode.light,
-                        label: Text(l10n.settingsThemeLight),
-                      ),
-                      ButtonSegment<ThemeMode>(
-                        value: ThemeMode.dark,
-                        label: Text(l10n.settingsThemeDark),
-                      ),
-                    ],
-                    selected: <ThemeMode>{settings.themeMode},
-                    onSelectionChanged: (Set<ThemeMode> selection) {
-                      settings.setThemeMode(selection.first);
-                    },
-                  ),
+                AppearanceRow(
+                  themeMode: settings.themeMode,
+                  onThemeModeChanged: settings.setThemeMode,
                 ),
                 const Divider(height: 1),
                 SwitchListTile(
@@ -308,6 +286,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
+}
+
+/// The theme-mode row: an icon-led title/subtitle line, then the light/dark/
+/// system picker on its own full-width line underneath.
+///
+/// Deliberately not a `ListTile` with the picker as `trailing`. A three-segment
+/// `SegmentedButton` with real-word labels ("Match device" is the long one)
+/// does not fit `ListTile.trailing`'s width budget on an ordinary phone --
+/// Flutter's own `ListTile` throws "Trailing widget consumes entire tile
+/// width" for exactly this shape, even at default text scale, not only at a
+/// large one. In a release/profile build with no debug overlay to show that
+/// assertion, what got painted instead was every letter of "Appearance" and
+/// "Match device" on its own line. Stacking the picker under the title removes
+/// the width fight outright, rather than chasing a size threshold that would
+/// only move with the next locale or font size anyway. Covered by
+/// test/settings_appearance_row_test.dart across five text scales.
+class AppearanceRow extends StatelessWidget {
+  const AppearanceRow({
+    super.key,
+    required this.themeMode,
+    required this.onThemeModeChanged,
+  });
+
+  final ThemeMode themeMode;
+  final ValueChanged<ThemeMode> onThemeModeChanged;
+
   String _themeLabel(AppLocalizations l10n, ThemeMode mode) {
     switch (mode) {
       case ThemeMode.system:
@@ -317,6 +321,64 @@ class _SettingsScreenState extends State<SettingsScreen> {
       case ThemeMode.dark:
         return l10n.settingsThemeDark;
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations l10n = AppLocalizations.of(context);
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+          AppSpacing.md, AppSpacing.sm, AppSpacing.md, AppSpacing.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              const Icon(Icons.brightness_6_outlined),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(l10n.settingsThemeMode,
+                        style: Theme.of(context).textTheme.bodyLarge),
+                    Text(
+                      _themeLabel(l10n, themeMode),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          SegmentedButton<ThemeMode>(
+            showSelectedIcon: false,
+            segments: <ButtonSegment<ThemeMode>>[
+              ButtonSegment<ThemeMode>(
+                value: ThemeMode.system,
+                label: Text(l10n.settingsThemeSystem),
+              ),
+              ButtonSegment<ThemeMode>(
+                value: ThemeMode.light,
+                label: Text(l10n.settingsThemeLight),
+              ),
+              ButtonSegment<ThemeMode>(
+                value: ThemeMode.dark,
+                label: Text(l10n.settingsThemeDark),
+              ),
+            ],
+            selected: <ThemeMode>{themeMode},
+            onSelectionChanged: (Set<ThemeMode> selection) {
+              onThemeModeChanged(selection.first);
+            },
+          ),
+        ],
+      ),
+    );
   }
 }
 

@@ -8,6 +8,7 @@ import '../services/account_repository.dart';
 import '../services/analytics_service.dart';
 import '../services/auth_repository.dart';
 import '../services/crash_reporting.dart';
+import '../services/kids_zone_repository.dart';
 import '../services/oauth_provider_service.dart';
 
 /// Owns the signed-in session: the bearer token, the current [SessionUser], and
@@ -24,12 +25,14 @@ class SessionController extends ChangeNotifier {
     required LocalStore store,
     required AnalyticsService analytics,
     required OAuthProviderService oauth,
+    required KidsZoneRepository kidsZone,
   })  : _api = api,
         _auth = auth,
         _account = account,
         _store = store,
         _analytics = analytics,
-        _oauth = oauth {
+        _oauth = oauth,
+        _kidsZone = kidsZone {
     _api.onUnauthorized = _handleUnauthorized;
   }
 
@@ -39,6 +42,7 @@ class SessionController extends ChangeNotifier {
   final LocalStore _store;
   final AnalyticsService _analytics;
   final OAuthProviderService _oauth;
+  final KidsZoneRepository _kidsZone;
 
   SessionUser? _user;
   OnboardingStep _nextStep = OnboardingStep.levelMap;
@@ -172,6 +176,14 @@ class SessionController extends ChangeNotifier {
 
   /// M-30.
   Future<void> signOut() async {
+    // Flush Kids Zone progress before clear() wipes it. Stars are written
+    // locally the moment a stop is finished and synced opportunistically after,
+    // so a child who played offline and then signed out once back online would
+    // otherwise lose every star earned in between — the device copy is deleted
+    // here and the server never heard about it. Failure is fine and ignored
+    // inside sync(): it means the progress was already unreachable.
+    await _kidsZone.sync();
+
     try {
       await _auth.signOut();
     } on ApiException {

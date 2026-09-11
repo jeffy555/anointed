@@ -28,6 +28,7 @@ from app.routers import (
     content,
     game,
     iap,
+    kids_zone,
     leaderboard,
     legal,
     version,
@@ -149,6 +150,7 @@ app.include_router(consent_web.router)
 app.include_router(legal.router)
 app.include_router(game.router)
 app.include_router(leaderboard.router)
+app.include_router(kids_zone.router)
 app.include_router(content.router)
 app.include_router(iap.router)
 app.include_router(ads.router)

@@ -8,6 +8,7 @@ import '../../core/routes.dart';
 import '../../core/tokens.dart';
 import '../../l10n/gen/app_localizations.dart';
 import '../../models/session.dart';
+import '../map/parchment_codex_tokens.dart';
 import '../../services/oauth_provider_service.dart';
 import '../../state/session_controller.dart';
 import '../../widgets/auth_buttons.dart';
@@ -89,11 +90,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     width: 88,
                     height: 88,
                     decoration: BoxDecoration(
-                      gradient: AppColors.heroGradient,
+                      color: ParchmentColors.cream,
                       borderRadius: BorderRadius.circular(AppRadius.lg),
+                      border: Border.all(
+                        color: ParchmentColors.gold.withOpacity(0.45),
+                        width: 2,
+                      ),
                       boxShadow: <BoxShadow>[
                         BoxShadow(
-                          color: theme.colorScheme.primary.withOpacity(0.35),
+                          color: ParchmentColors.ink.withOpacity(0.12),
                           blurRadius: 18,
                           offset: const Offset(0, 8),
                         ),
@@ -103,7 +108,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     child: const Icon(
                       Icons.auto_stories_rounded,
                       size: 44,
-                      color: Colors.white,
+                      color: ParchmentColors.gold,
                     ),
                   ),
                 ),

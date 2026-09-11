@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../core/responsive.dart';
 import '../core/tokens.dart';
+import '../features/map/parchment_codex_tokens.dart';
 import '../l10n/gen/app_localizations.dart';
 
 /// Centred spinner for a whole-screen load (design-spec §15 "Loading" rows).
@@ -252,11 +253,14 @@ class NoticeBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    // The same four tones ParchmentNoticeBanner uses, so the two banner widgets
+    // don't disagree about what "warning" looks like. The former neon
+    // #00E676 success also failed to carry its own text on cream.
     final Color base = switch (tone) {
-      NoticeTone.info => theme.colorScheme.secondary,
-      NoticeTone.warning => AppColors.warning,
+      NoticeTone.info => ParchmentColors.brown,
+      NoticeTone.warning => ParchmentColors.current,
       NoticeTone.error => theme.colorScheme.error,
-      NoticeTone.success => AppColors.success,
+      NoticeTone.success => const Color(0xFF3D7A4A),
     };
 
     return Semantics(

@@ -5,6 +5,7 @@ from app.models.commerce import AdImpressionLog, PurchaseRecord
 from app.models.consent import ParentalConsentRecord
 from app.models.content import BibleCharacter, ContentPublishRecord, Level, Question
 from app.models.gameplay import LeaderboardEntry, LevelAttempt, UserPerformanceSummary
+from app.models.kids_zone import KidsZoneStopCompletion
 from app.models.user import (
     AuthIdentity,
     LevelCompletion,
@@ -22,6 +23,7 @@ __all__ = [
     "AuthIdentity",
     "BibleCharacter",
     "ContentPublishRecord",
+    "KidsZoneStopCompletion",
     "LeaderboardEntry",
     "Level",
     "LevelAttempt",

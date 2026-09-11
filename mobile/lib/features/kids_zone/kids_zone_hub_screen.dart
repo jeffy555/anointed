@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +11,7 @@ import '../../core/tokens.dart';
 import '../../l10n/gen/app_localizations.dart';
 import '../../services/analytics_service.dart';
 import '../../services/kids_zone_audio_service.dart';
+import '../../services/kids_zone_repository.dart';
 import '../../widgets/state_views.dart';
 import 'kids_zone_adventures.dart';
 import 'kids_zone_game_catalog.dart';
@@ -57,11 +60,30 @@ class _KidsZoneHubScreenState extends State<KidsZoneHubScreen> {
     super.dispose();
   }
 
+  /// Paints from the device first, then reconciles with the server.
+  ///
+  /// The local read is synchronous and always happens, so the hub never shows a
+  /// child a spinner or an empty board while the network decides — Kids Zone is
+  /// the part of the app most likely to be played offline. The sync that follows
+  /// is what restores stars after a sign-out wipe, a reinstall, or a move to a
+  /// different phone; when it fails it returns null and the local view stands.
   void _loadProgress() {
+    final LocalStore store = context.read<LocalStore>();
     setState(() {
-      final LocalStore store = context.read<LocalStore>();
       _completed = store.kidsZoneCompletedStops;
       _stars = store.kidsZoneStars;
+    });
+
+    unawaited(_syncProgress());
+  }
+
+  Future<void> _syncProgress() async {
+    final Map<String, int>? merged =
+        await context.read<KidsZoneRepository>().sync();
+    if (!mounted || merged == null) return;
+    setState(() {
+      _completed = merged.keys.toSet();
+      _stars = merged;
     });
   }
 

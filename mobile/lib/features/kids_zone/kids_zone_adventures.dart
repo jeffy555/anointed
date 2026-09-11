@@ -181,3 +181,18 @@ KidsAdventure? kidsZoneAdventureById(String adventureId) {
   }
   return null;
 }
+
+/// Which adventure a stop belongs to.
+///
+/// Progress is stored on the device as stop ids alone, but the sync payload
+/// carries the adventure too. Deriving it here rather than storing it keeps the
+/// catalogue the single source of that relationship — and means progress saved
+/// before sync existed can still be uploaded, with nothing to migrate.
+KidsAdventure? kidsZoneAdventureForStop(String stopId) {
+  for (final KidsAdventure adventure in kKidsAdventures) {
+    for (final KidsAdventureStop stop in adventure.stops) {
+      if (stop.id == stopId) return adventure;
+    }
+  }
+  return null;
+}

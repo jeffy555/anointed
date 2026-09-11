@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -5,6 +7,7 @@ import '../../core/local_store.dart';
 import '../../core/routes.dart';
 import '../../l10n/gen/app_localizations.dart';
 import '../../services/analytics_service.dart';
+import '../../services/kids_zone_repository.dart';
 import '../../widgets/state_views.dart';
 import 'games/animal_care_game.dart';
 import 'games/animal_matching_game.dart';
@@ -54,8 +57,17 @@ class _KidsZoneGameScreenState extends State<KidsZoneGameScreen> {
 
     final LocalStore store = context.read<LocalStore>();
     final AnalyticsService analytics = context.read<AnalyticsService>();
+    final KidsZoneRepository kidsZone = context.read<KidsZoneRepository>();
     final NavigatorState navigator = Navigator.of(context);
     await store.markKidsZoneStopComplete(args.stopId, stars: stars);
+
+    // Deliberately not awaited: a child has just finished a stop and the
+    // celebration screen must not wait on the network, or sit behind a spinner
+    // when there isn't one. The write above already landed locally, and the
+    // sync merges, so a failure here costs nothing — the next sync sends the
+    // same state again.
+    unawaited(kidsZone.sync());
+
     if (!context.mounted) return;
 
     analytics.track(

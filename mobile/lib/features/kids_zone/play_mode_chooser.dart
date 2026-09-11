@@ -2,9 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../core/tokens.dart';
 import '../../l10n/gen/app_localizations.dart';
+import '../map/parchment_codex_tokens.dart';
 import 'kids_zone_tokens.dart';
 
 /// Two-box chooser on the level map — Main Journey vs Kids Zone for every signed-in user.
+///
+/// Parchment-styled, not Kids-Zone-styled: this sits on the level map, which is
+/// a Parchment screen. It previously used KidsZoneText/KidsZoneColors
+/// throughout, which put that palette's blue ink on cream paper. The one thing
+/// kept from Kids Zone is the green accent on its own box, which is signalling
+/// where the box leads rather than styling the map.
 class PlayModeChooser extends StatelessWidget {
   const PlayModeChooser({super.key, required this.onKidsZone});
 
@@ -19,7 +26,11 @@ class PlayModeChooser extends StatelessWidget {
       children: <Widget>[
         Text(
           l10n.playModeChooserHeading,
-          style: KidsZoneText.nunito(size: 14, weight: FontWeight.w700, color: KidsZoneColors.inkMuted),
+          style: ParchmentText.karla(
+            size: 13,
+            weight: FontWeight.w700,
+            color: ParchmentColors.brown,
+          ),
         ),
         const SizedBox(height: AppSpacing.sm),
         Row(
@@ -29,7 +40,7 @@ class PlayModeChooser extends StatelessWidget {
                 title: l10n.playModeMainJourneyTitle,
                 subtitle: l10n.playModeMainJourneySubtitle,
                 icon: Icons.map_rounded,
-                accent: const Color(0xFF8D6E63),
+                accent: ParchmentColors.brown,
                 selected: true,
                 onTap: () {},
               ),
@@ -72,10 +83,9 @@ class _ModeBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: selected ? accent.withOpacity(0.12) : KidsZoneColors.card,
+      color: selected ? accent.withOpacity(0.10) : ParchmentColors.cream,
       borderRadius: BorderRadius.circular(16),
-      elevation: selected ? 0 : 1,
-      shadowColor: accent.withOpacity(0.25),
+      elevation: 0,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
@@ -95,12 +105,17 @@ class _ModeBox extends StatelessWidget {
               const SizedBox(height: AppSpacing.sm),
               Text(
                 title,
-                style: KidsZoneText.nunito(size: 15, weight: FontWeight.w800, color: KidsZoneColors.ink),
+                style: ParchmentText.cormorant(size: 18),
               ),
               const SizedBox(height: 4),
               Text(
                 subtitle,
-                style: KidsZoneText.nunito(size: 11, weight: FontWeight.w600, color: KidsZoneColors.inkMuted),
+                style: ParchmentText.karla(
+                  size: 11,
+                  weight: FontWeight.w600,
+                  color: ParchmentColors.inkMuted(0.6),
+                  height: 1.35,
+                ),
               ),
             ],
           ),

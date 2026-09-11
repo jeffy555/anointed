@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -18,6 +19,7 @@ import 'services/content_service.dart';
 import 'services/crash_reporting.dart';
 import 'services/game_repository.dart';
 import 'services/iap_service.dart';
+import 'services/kids_zone_repository.dart';
 import 'services/leaderboard_repository.dart';
 import 'services/notification_service.dart';
 import 'services/oauth_provider_service.dart';
@@ -29,6 +31,21 @@ import 'state/settings_controller.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Dark status-bar icons, because the app is parchment on every screen. Only
+  // AppBarTheme was setting this, and the branded screens (splash, level map,
+  // profile, leaderboard, practice) have no AppBar to set it — so on a phone in
+  // night mode Android chose light icons and painted the clock white on cream.
+  // Set here rather than per screen: the one place it cannot be forgotten.
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.light,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ),
+  );
 
   // Error handlers are installed before the first frame, and a missing Firebase
   // config simply leaves crash reporting off (see CrashReporting).
@@ -57,6 +74,7 @@ Future<void> main() async {
     final ConsentRepository consent = ConsentRepository(api);
     final GameRepository game = GameRepository(api, store);
     final LeaderboardRepository leaderboard = LeaderboardRepository(api, store);
+    final KidsZoneRepository kidsZone = KidsZoneRepository(api, store);
     final VersionRepository version = VersionRepository(api, device, store);
 
     final ContentService content = ContentService(
@@ -79,6 +97,7 @@ Future<void> main() async {
       store: store,
       analytics: analytics,
       oauth: oauth,
+      kidsZone: kidsZone,
     );
     final SettingsController settings = SettingsController(store);
     final BootstrapController bootstrap = BootstrapController(
@@ -106,6 +125,7 @@ Future<void> main() async {
           Provider<ConsentRepository>.value(value: consent),
           Provider<GameRepository>.value(value: game),
           Provider<LeaderboardRepository>.value(value: leaderboard),
+          Provider<KidsZoneRepository>.value(value: kidsZone),
           Provider<VersionRepository>.value(value: version),
           ChangeNotifierProvider<NotificationService>.value(value: notifications),
           ChangeNotifierProvider<TextToSpeechService>.value(value: tts),
