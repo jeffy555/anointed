@@ -1,0 +1,26 @@
+# Anointed backend — FastAPI + NeonDB (PostgreSQL)
+# Python 3.11+
+
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic[email]==2.10.5
+pydantic-settings==2.7.1
+
+# Data layer
+SQLAlchemy==2.0.37
+alembic==1.14.1
+psycopg[binary]==3.2.4
+
+# Auth / crypto
+pyjwt[crypto]==2.10.1
+passlib[bcrypt]==1.7.4
+bcrypt==4.2.1
+
+# Embedded admin at /admin (see README "Admin dashboard" for the AdminJS decision record)
+sqladmin==0.20.1
+itsdangerous==2.2.0
+jinja2==3.1.5
+python-multipart==0.0.20
+
+# Outbound HTTP for OAuth token verification, store receipt validation, email provider
+httpx==0.28.1

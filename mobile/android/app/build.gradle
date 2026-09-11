@@ -1,0 +1,151 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+// Firebase / Crashlytics: apply only when google-services.json is present so CI
+// and fresh clones build without Firebase credentials.
+def googleServicesFile = file("google-services.json")
+if (googleServicesFile.exists()) {
+    apply plugin: "com.google.gms.google-services"
+}
+
+// Upload-key material, kept out of the repo (see android/.gitignore) and read
+// from android/key.properties. Copy key.properties.example to get started.
+def keystorePropertiesFile = rootProject.file("key.properties")
+def keystoreProperties = new Properties()
+def hasReleaseKeystore = keystorePropertiesFile.exists()
+if (hasReleaseKeystore) {
+    keystorePropertiesFile.withInputStream { keystoreProperties.load(it) }
+    ["storeFile", "storePassword", "keyAlias", "keyPassword"].each { key ->
+        if (!keystoreProperties.getProperty(key)) {
+            throw new GradleException(
+                "android/key.properties is missing '${key}'. " +
+                "See android/key.properties.example.")
+        }
+    }
+}
+
+// AdMob's application id is baked into the manifest at build time rather than
+// hard-coded in it, so that shipping Google's public sample id is something the
+// build can refuse rather than something nobody notices. Override with:
+//   flutter build appbundle -PadmobAppId=ca-app-pub-XXXX~YYYY
+def admobTestAppId = "ca-app-pub-3940256099942544~3347511713"
+def admobAppId = project.findProperty("admobAppId") ?: admobTestAppId
+
+android {
+    namespace = "com.anointed.anointed"
+    // flutter_tts 4.x requires compileSdk 36.
+    compileSdk = 36
+    ndkVersion = "27.1.12297006"
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+        coreLibraryDesugaringEnabled = true
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_11
+    }
+
+    defaultConfig {
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId = "com.anointed.anointed"
+        // You can update the following values to match your application needs.
+        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        // flutter_tts requires API 24+ (Android 7.0).
+        minSdk = 24
+        // Matches compileSdk. flutter.targetSdkVersion (bundled Flutter 3.24.5) still
+        // resolves to 34, below the current Play submission floor.
+        targetSdk = 36
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+
+        manifestPlaceholders["admobAppId"] = admobAppId
+    }
+
+    packagingOptions {
+        jniLibs {
+            // Play requires 16 KB native-page-size support (Nov 2025). Uncompressed,
+            // page-aligned .so extraction is required for that; NDK r27+ (in use here)
+            // aligns libraries built from source, but this must still be verified for
+            // any prebuilt .so shipped by third-party plugin AARs via the Play Console
+            // pre-launch report before submission.
+            useLegacyPackaging = false
+        }
+    }
+
+    signingConfigs {
+        if (hasReleaseKeystore) {
+            release {
+                // storeFile is resolved relative to android/app, so an absolute
+                // path is the safer thing to put in key.properties.
+                storeFile = file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            if (hasReleaseKeystore) {
+                signingConfig = signingConfigs.release
+            } else {
+                // No release keystore configured yet — see android/key.properties.example.
+                // Falling back to the debug keystore keeps local `flutter run --release`
+                // working, but this build type cannot be uploaded to Play like this;
+                // `verifyReleaseConfig` below is what stops it being uploaded anyway.
+                signingConfig = signingConfigs.debug
+            }
+
+            minifyEnabled = true
+            shrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
+        }
+    }
+}
+
+// The two things a store build must not be wrong about, checked before it is
+// assembled rather than after it is rejected. Mirrors AppConfig.assertReleaseConfig
+// on the Dart side: fail loudly at build time, not silently at install time.
+tasks.register("verifyReleaseConfig") {
+    doFirst {
+        def problems = []
+        if (!hasReleaseKeystore) {
+            problems << "no android/key.properties, so this bundle would be signed " +
+                "with the debug keystore and Play will reject it " +
+                "(copy android/key.properties.example)"
+        }
+        if (admobAppId == admobTestAppId) {
+            problems << "AdMob app id is still Google's public sample " +
+                "(${admobTestAppId}). Pass -PadmobAppId=<your id>"
+        }
+        if (problems) {
+            throw new GradleException(
+                "This release build is not shippable:\n  - " + problems.join("\n  - "))
+        }
+    }
+}
+
+tasks.whenTaskAdded { task ->
+    // bundleRelease is the Play upload path; assembleRelease covers the APK.
+    if (task.name == "bundleRelease" || task.name == "assembleRelease") {
+        task.dependsOn("verifyReleaseConfig")
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+dependencies {
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.4"
+}

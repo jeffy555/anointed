@@ -1,0 +1,10 @@
+# design-spec §24: gen_l10n / ARB from day one. Generated sources are written into
+# lib/l10n/gen (not the deprecated synthetic flutter_gen package) so that
+# `flutter analyze` and IDEs resolve them without a prior build step.
+arb-dir: lib/l10n
+template-arb-file: app_en.arb
+output-dir: lib/l10n/gen
+output-localization-file: app_localizations.dart
+output-class: AppLocalizations
+synthetic-package: false
+nullable-getter: false

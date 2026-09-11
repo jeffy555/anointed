@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The launcher name. A resource rather than a literal in the manifest so
+         it can be localised the way the rest of the app's copy is: a
+         res/values-xx/strings.xml overrides it per locale. -->
+    <string name="app_name">Anointed</string>
+</resources>

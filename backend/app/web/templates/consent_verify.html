@@ -1,0 +1,91 @@
+{# M-06F — VPC Path B parent confirmation page (design-spec §11).
+   Opened on the parent's own device from the emailed single-use link. #}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Permission for {{ child_name }} — Anointed</title>
+  <link rel="stylesheet" href="/static/consent.css">
+</head>
+<body>
+  <main class="card">
+    {% if error %}
+      <div class="banner error" role="alert">{{ error }}</div>
+    {% endif %}
+
+    <h1>Permission for {{ child_name }}</h1>
+    <p class="meta">
+      Anointed is a Bible character quiz game. Because {{ child_name }} is under 13, we need a
+      parent or guardian's permission before the account can be used.
+    </p>
+
+    <p class="meta draft-notice">
+      <strong>Draft disclosure.</strong> This page uses COPPA-oriented language pending
+      legal counsel review. Do not rely on it for a production launch without sign-off.
+    </p>
+
+    <h2>What we collect</h2>
+    <ul>
+      <li>{{ child_name }}'s first name and age (age is used only to decide which rules apply)</li>
+      <li>A mobile number, if one was entered when signing up</li>
+      <li>Game progress: which levels were played, scores, and answer timings</li>
+      <li>Basic app usage events so we can see which levels are too hard</li>
+      <li>Your name, email, and relationship to {{ child_name }} — kept as the record of this
+          permission</li>
+    </ul>
+
+    <h2>What we do not do</h2>
+    <ul>
+      <li>No advertising is shown to players under 13</li>
+      <li>No advertising identifiers or cross-app tracking for players under 13</li>
+      <li>The leaderboard shows only a first name and last initial for players under 13</li>
+    </ul>
+
+    <p class="meta">
+      You can ask us to delete {{ child_name }}'s data at any time from inside the app
+      (Profile &rarr; Delete my account), or by contacting
+      <a href="mailto:{{ support_email }}">{{ support_email }}</a>.
+      Full details are in our <a href="{{ privacy_policy_url }}" target="_blank"
+      rel="noopener">Privacy Policy</a> (version {{ policy_version }}).
+    </p>
+
+    <form method="post" action="{{ form_action }}" id="consent-form">
+      <label for="parent_guardian_name">Your full name</label>
+      <input type="text" id="parent_guardian_name" name="parent_guardian_name"
+             value="{{ prefill_name or '' }}" required minlength="2" maxlength="160"
+             autocomplete="name">
+
+      <label for="parent_relationship">Your relationship to {{ child_name }}</label>
+      <select id="parent_relationship" name="parent_relationship">
+        <option value="parent">Parent</option>
+        <option value="guardian">Legal guardian</option>
+        <option value="other">Other legal guardian</option>
+      </select>
+
+      <label class="check">
+        <input type="checkbox" id="consent_box" name="consents_to_data_use" value="true">
+        <span>I am the parent or legal guardian of {{ child_name }}, and I give permission for
+        Anointed to collect and use their information as described above and in the
+        Privacy Policy.</span>
+      </label>
+
+      <button type="submit" name="decision" value="approve" class="approve" id="approve-btn"
+              disabled>Give permission</button>
+      <button type="submit" name="decision" value="decline" class="decline"
+              formnovalidate>Decline</button>
+    </form>
+
+    <p class="meta expiry-note">
+      This link can be used once and expires {{ expires_label }}.
+    </p>
+  </main>
+
+  <footer>
+    Anointed &middot; {{ support_email }}
+  </footer>
+
+  <script src="/static/consent.js"></script>
+</body>
+</html>

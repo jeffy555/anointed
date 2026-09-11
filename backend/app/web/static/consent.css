@@ -1,0 +1,123 @@
+/* Parent-facing VPC web pages (M-06F). Tokens mirror design-spec §7 light mode. */
+:root {
+  --primary: #C8851A;
+  --primary-dark: #9C6414;
+  --secondary: #6B4FA0;
+  --surface: #FFFDF8;
+  --card: #FFFFFF;
+  --text: #1C1A17;
+  --muted: #6B6560;
+  --success: #2D8B3F;
+  --error: #C93A2E;
+  --border: #E6E0D6;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 24px 16px 48px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+}
+
+.card {
+  max-width: 620px;
+  margin: 0 auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px 24px;
+}
+
+h1 { font-size: 1.5rem; color: var(--secondary); margin: 0 0 8px; }
+h2 { font-size: 1.05rem; margin: 28px 0 8px; }
+p { margin: 0 0 12px; }
+ul { margin: 0 0 16px 1.1rem; padding: 0; }
+li { margin-bottom: 6px; }
+
+.meta { color: var(--muted); font-size: 0.9rem; }
+.expiry-note { margin-top: 18px; }
+.center { text-align: center; }
+
+label { display: block; font-weight: 600; margin: 18px 0 6px; }
+
+input[type=text], select {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--text);
+}
+
+.check {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 18px 0;
+  font-weight: 400;
+}
+
+.check input {
+  margin-top: 5px;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+
+button {
+  width: 100%;
+  padding: 15px 18px;
+  font-size: 1.03rem;
+  font-weight: 700;
+  border: 0;
+  border-radius: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.approve { background: var(--primary); color: #fff; }
+.approve:hover { background: var(--primary-dark); }
+.approve:disabled { background: #D8CEBE; cursor: not-allowed; }
+.decline { background: transparent; color: var(--error); border: 1px solid var(--error); }
+
+.banner {
+  background: #FFF6E5;
+  border: 1px solid #F0D9A8;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 0.92rem;
+  margin-bottom: 20px;
+}
+
+.banner.error { background: #FDECEA; border-color: #F3B7B1; color: var(--error); }
+.banner.success { background: #EAF6EC; border-color: #B7DFC0; color: var(--success); }
+
+.result-icon { font-size: 3rem; line-height: 1; margin-bottom: 8px; }
+
+a { color: var(--secondary); }
+
+footer {
+  max-width: 620px;
+  margin: 20px auto 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface: #1A1814;
+    --card: #2A2520;
+    --text: #F0EDE8;
+    --muted: #A09890;
+    --primary: #E0A040;
+    --secondary: #9B7EC8;
+    --border: #3A342C;
+  }
+  input[type=text], select { background: #1F1B16; color: var(--text); }
+}

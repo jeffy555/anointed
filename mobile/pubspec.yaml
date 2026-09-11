@@ -1,0 +1,118 @@
+name: anointed
+description: Anointed — Bible character quiz game.
+publish_to: "none"
+
+# version: <marketing version>+<build number>. The build number is compared
+# against min_app_build from the content manifest; the marketing version is what
+# GET /v1/version/minimum compares for the force-upgrade gate.
+version: 1.0.0+3
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+  flutter: ">=3.24.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # State + routing
+  provider: ^6.1.2
+
+  # Networking / serialization
+  http: ^1.2.2
+  intl: ^0.19.0
+  crypto: ^3.0.5
+
+  # Local storage
+  shared_preferences: ^2.3.2
+  flutter_secure_storage: ^9.2.2
+  path_provider: ^2.1.4
+
+  # Outbound links: store pages for the force-upgrade gate, the server-hosted
+  # privacy/terms pages, mailto for support, and the OS notification settings.
+  url_launcher: ^6.3.0
+  app_settings: ^5.1.1
+
+  # Device / runtime metadata for the analytics envelope
+  package_info_plus: ^8.0.2
+  device_info_plus: ^10.1.2
+  connectivity_plus: ^6.0.5
+  uuid: ^4.5.1
+
+  # Auth providers
+  google_sign_in: ^6.2.1
+  sign_in_with_apple: ^6.1.1
+
+  # Monetization
+  in_app_purchase: ^3.2.0
+  google_mobile_ads: ^5.1.0
+
+  # Local reminders (no remote push in v1 — design-spec §22)
+  flutter_local_notifications: ^17.2.2
+  timezone: ^0.9.4
+  flutter_timezone: ^3.0.1
+
+  # Read-aloud (kids 6–12) and character SVG portraits
+  flutter_tts: ^4.2.0
+  flutter_svg: ^2.0.10+1
+
+  # Kids Zone ambient music and SFX
+  audioplayers: ^6.1.0
+
+  # Crash reporting. Optional at runtime: both plugins no-op when the native
+  # Firebase config file is absent (see lib/services/crash_reporting.dart).
+  firebase_core: ^3.6.0
+  firebase_crashlytics: ^4.1.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/content/seed_pack.json
+    - assets/audio/kids_zone/anointed_interesting.wav
+    - assets/audio/kids_zone/anointed_funky.wav
+    - assets/audio/kids_zone/anointed_thrilling.wav
+
+  # Bundled rather than pulled from fonts.gstatic.com at runtime, which is what
+  # the google_fonts package does by default. Two reasons: a first launch with no
+  # connection silently fell back to Roboto and lost both type systems, and the
+  # fetch was an unsolicited request to a third party on a child-directed app,
+  # made before the consent gate. Only the weights the app actually renders are
+  # here — see AnointedFonts in lib/core/tokens.dart for the family names.
+  fonts:
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito-600.ttf
+          weight: 600
+        - asset: assets/fonts/Nunito-700.ttf
+          weight: 700
+        - asset: assets/fonts/Nunito-800.ttf
+          weight: 800
+    - family: Karla
+      fonts:
+        - asset: assets/fonts/Karla-400.ttf
+          weight: 400
+        - asset: assets/fonts/Karla-500.ttf
+          weight: 500
+        - asset: assets/fonts/Karla-600.ttf
+          weight: 600
+        - asset: assets/fonts/Karla-700.ttf
+          weight: 700
+        - asset: assets/fonts/Karla-800.ttf
+          weight: 800
+    - family: CormorantGaramond
+      fonts:
+        - asset: assets/fonts/CormorantGaramond-500.ttf
+          weight: 500
+        - asset: assets/fonts/CormorantGaramond-600.ttf
+          weight: 600
+        - asset: assets/fonts/CormorantGaramond-700.ttf
+          weight: 700

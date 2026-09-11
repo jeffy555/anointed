@@ -1,0 +1,7 @@
+-r requirements.txt
+
+pytest==8.3.4
+pytest-asyncio==0.25.2
+httpx==0.28.1
+# Tests use sqlite+pysqlite:// per tests/conftest.py
+pysqlite3-binary==0.5.4.post2; python_version < "3.13"

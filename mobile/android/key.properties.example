@@ -1,0 +1,16 @@
+# Upload-key material for release builds. Copy to android/key.properties and fill in.
+#
+# key.properties, *.jks and *.keystore are all gitignored — the upload key is the
+# app's identity on Play. Lose it and you cannot ship an update to this listing;
+# leak it and someone else can. Keep it in the team password manager, not here.
+#
+# Generate one:
+#   keytool -genkey -v -keystore anointed-upload.jks -storetype JKS \
+#     -keyalg RSA -keysize 2048 -validity 10000 -alias upload
+#
+# storeFile is resolved relative to android/app, so an absolute path is safer.
+
+storeFile=C:/keys/anointed-upload.jks
+storePassword=
+keyAlias=upload
+keyPassword=

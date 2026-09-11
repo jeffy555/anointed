@@ -1,0 +1,205 @@
+{
+  "meta": {
+    "domainFlags": ["education", "apps involving minors", "religious"],
+    "assumptionsMade": [
+      "Mobile framework: Flutter (cross-platform game-style UI, map progression, strong Android/iOS parity)",
+      "Python backend framework: FastAPI",
+      "Hosting: low-cost provider (e.g. Railway or Render) paired with NeonDB",
+      "Crash reporting: Firebase Crashlytics",
+      "Dark mode: included (agent choice — professional neutral theme with light/dark)",
+      "Bundle ID placeholder: com.anointed.app (finalize before store submission)",
+      "Ad network: Google AdMob as default integration target (undecided by user — swappable)",
+      "Data residency: no strict regional lock; prioritize cost-effective regions compatible with NeonDB",
+      "Budget: not specified — optimize for minimal hosting and third-party costs",
+      "DAU success metric: no numeric target specified",
+      "Competitor names: not provided — differentiation via progressive challenge formats and level-by-level difficulty",
+      "Tamil translations (future): agent-generated draft content for review by church stakeholders",
+      "Users aged 13–17: grouped with youth/adult flows unless age-gated into kid mode",
+      "Challenge formats beyond standard Q&A: agent designs varied mechanics (hints, clues, image/text puzzles) increasing difficulty per level",
+      "Free tier: levels 1–5 playable without purchase; levels 6–100 require one-time IAP (~₹49 via Apple/Google stores — parent-friendly impulse tier; regional store pricing applies)",
+      "Monetization v1: IAP-primary for kid audience — under-13 users see no interstitial ads (negligible COPPA CPM + UX/store-review risk); ad-supported free tier for users 13+ only, capped frequency",
+      "Practice mode: offline-capable subset of gameplay without ads, leaderboard, or IAP prompts",
+      "Main/ranked mode: requires internet for ads, leaderboard sync, and IAP",
+      "Leaderboard refresh: polled every few minutes (not realtime websocket)",
+      "v1 auth simplified to phone number OR Google Sign-In OR Sign in with Apple only — no biometric login, no SMS OTP, no email/password",
+      "Phone sign-up collects mobile + name + age without SMS verification (low friction; account portability on new device relies on Google/Apple sign-in or support)",
+      "Sign in with Apple included in v1 alongside Google Sign-In (App Store requirement when Google is offered)",
+      "v1 launch question types: text_qa and verse_clue; image_clue schema/UI supported but not launch-blocking unless image assets are ready — see design-spec §18H",
+      "Admin dashboard v1: AdminJS embedded in FastAPI (not custom React); Retool acceptable alternative — see design-spec §23",
+      "Local notification reminders in v1 (on-device only); remote FCM/APNs push deferred post-v1 — see design-spec §22",
+      "Leaderboard anti-cheat: server-authoritative LevelAttempt with per-answer validation; no client-submitted scores — see design-spec §21",
+      "Phone-path abuse control: no SMS OTP in v1, but account creation is rate-limited by IP + app install ID; leaderboard attempts also rate-limited",
+      "Flutter localization infrastructure (ARB/l10n) included from day one even though launch language is English"
+    ],
+    "notApplicable": [
+      "Remote push notifications / FCM/APNs server (local on-device reminders ARE in v1 — see design-spec §22)",
+      "Deep linking / universal links (not required for v1)",
+      "Media uploads by end users (content managed via admin dashboard)",
+      "Existing legacy system integrations",
+      "Biometric login (fingerprint/Face ID)",
+      "SMS OTP verification (Twilio/MSG91)",
+      "Email/password authentication",
+      "Device permissions (camera, location, contacts, microphone) — notification permission requested only after user opts in to local reminders (§22)"
+    ]
+  },
+  "discovery": {
+    "concept": "Anointed — a Bible character guessing quiz game with a visual level map, progressive difficulty, and varied challenge formats. Players learn and recall Bible characters across 100 levels (v1), scaling toward 300+ levels covering 3,000+ named Bible characters in future versions.",
+    "audience": "Church community across generations: kids (6–12, primary v1 UX focus), youth (18–24), adults, and elders. First-run experience optimized for kids 6–12 with accessibility accommodations for elders.",
+    "problem": "Help users understand and remember Bible characters through engaging, level-based challenges rather than static Q&A.",
+    "platform": "mobile + web admin dashboard"
+  },
+  "product": {
+    "businessModel": "Free download. Monetization is IAP-primary: one-time purchase (~₹49) unlocks levels 6–100 after a 5-level free trial. Interstitial ads only for users aged 13+ in main/ranked mode, frequency-capped (under-13 ad-free — COPPA non-personalized CPM is negligible). Practice mode is always ad-free. Unit economics are intentionally ministry/low-cost: at 5% conversion, 20,000 installs ≈ 1,000 purchases ≈ ₹49,000 gross before store fees.",
+    "successDefinition": "Daily active users (DAU) — primary 6-month success metric; no numeric target specified.",
+    "competitors": "Many existing Bible quiz and trivia apps; differentiation is more interesting progressive challenge formats (not a plain Q&A wizard), level-by-level difficulty increase, and a map-based progression experience.",
+    "outOfScope": "v1 targets 100 levels only (not full 300-level / 3,000+ character scope — planned for future versions). Biometric login, SMS OTP verification, and email/password auth deferred/removed for v1.",
+    "legalDocs": {
+      "privacyPolicy": "needs drafting",
+      "termsOfService": "needs drafting"
+    },
+    "monetizationType": "digital goods (store IAP required)",
+    "paymentProcessor": "Apple App Store IAP and Google Play Billing for level-unlock purchase (~₹49 tier — agent selects nearest store price tier); AdMob interstitial for 13+ main mode only, frequency-capped",
+    "monetization": {
+      "freeTierLevels": "1–5",
+      "iapUnlockLevels": "6–100",
+      "iapTargetPriceInr": 49,
+      "iapStoreTierNote": "Agent selects nearest Apple/Google price tier (~₹49 INR / ~$0.99 USD equivalent)",
+      "adsUnder13": "none — under-13 main mode is ad-free; IAP is primary revenue for kid segment",
+      "ads13Plus": "interstitial after every 3rd level complete in main mode; max 2 per session; never on levels 1–3; practice mode always ad-free",
+      "infrastructureCostsV1": "No SMS OTP in v1. Costs: hosting (Railway/Render), NeonDB, transactional email for VPC — sized for 100–500 users year 1"
+    }
+  },
+  "uxui": {
+    "criticalFlows": "1) Launch → level map. 2) First-time sign-up: Welcome → Google Sign-In OR Sign in with Apple OR phone (mobile + name + age) → age gate → parental consent if under 13 → privacy/ToS → account created. 3) Returning sign-in: Google, Apple, or phone (same device session persists until sign-out). 4) Start game → select level → 10 mixed-format questions under timer → all correct to pass; wrong answer restarts level; answers not revealed; question sets vary. 5) Progress levels 1–5 (free) → IAP unlock levels 6–100. 6) Leaderboard (internet, periodic refresh). 7) Practice mode (offline). 8) Account deletion in-app. 9) Force-upgrade block.",
+    "brand": "Attractive, professional, neutral church-friendly look — no existing style guide; agent to define design tokens (warm, approachable palette suitable for kids and elders).",
+    "accessibility": "Screen reader support (VoiceOver/TalkBack). Larger text option for elders. High readability for quiz content.",
+    "offline": "Practice mode playable offline using a versioned local Practice Content Pack. Main/ranked mode requires internet — questions fetched live from server; admin content updates apply immediately on next level attempt. Practice pack refreshes in background when online and server content_version is newer (see design-spec §19).",
+    "darkMode": "agent's choice",
+    "tabletSupport": "required — tablet layouts with landscape orientation supported",
+    "permissions": []
+  },
+  "localization": {
+    "launchLanguages": "English",
+    "futureLanguages": "Tamil",
+    "localeFormatting": "required",
+    "infrastructure": "Flutter gen_l10n / ARB files required from day one; all UI strings externalized even though only English ships in v1",
+    "rtlSupport": "not required",
+    "translationOwner": "agent (draft Tamil content in future release; church review recommended before publish)"
+  },
+  "backend": {
+    "entities": "User, ParentalConsentRecord, Level, BibleCharacter, Question, ContentPublishRecord, LevelAttempt (server-authoritative ranked attempts with per-answer validation), LeaderboardEntry (server-written only from validated attempts), UserProgress, PurchaseRecord, AdImpressionLog, AnalyticsEvent, AdminUser",
+    "integrations": "Apple App Store IAP, Google Play Billing, Google Sign-In, Sign in with Apple, ad network (TBD — AdMob default), transactional email provider for parent VPC links (e.g. SendGrid/Resend/SES), optional Firebase Analytics/Crashlytics",
+    "contentSync": {
+      "mainModeQuestions": "Server-authoritative — fetched live at level start via game API",
+      "practiceModeQuestions": "Local Practice Content Pack — offline-capable, refreshed via GET /v1/content/manifest + GET /v1/content/practice-pack when content_version is newer",
+      "versioning": "Monotonic content_version incremented on admin publish only; draft edits do not affect clients until publish",
+      "packStrategyV1": "Full gzipped pack replacement, not delta updates; expected 1–5 MB for text/verse launch pack and larger if image assets are included",
+      "seedPackInBinary": true,
+      "manifestCheckOnOnlineLaunch": true
+    },
+    "contentTargets": {
+      "characters": 300,
+      "launchQuestionsPerLevelTarget": 20,
+      "launchQuestionTotalTarget": 2000,
+      "questionPoolRangePerLevel": "20–30 approved+active questions",
+      "betaMinimumQuestionsPerLevel": 15,
+      "imageClueLaunchPolicy": "Not launch-blocking; text_qa + verse_clue must cover all levels. image_clue can publish post-launch as assets become ready."
+    },
+    "realtime": "Not required — leaderboard and analytics use periodic polling/sync every few minutes",
+    "scale": "100–500 users in first year; 100 levels × 10 questions; ~300 characters in v1 content pool",
+    "existingSystems": "None — greenfield build",
+    "pushNotifications": {
+      "remoteNeeded": false,
+      "localRemindersV1": true,
+      "localTriggers": "3-day and 7-day inactivity nudge; rescheduled on app open",
+      "notes": "flutter_local_notifications; opt-in after first level complete; no server push infra in v1"
+    },
+    "leaderboard": {
+      "antiCheat": "Server-authoritative LevelAttempt — per-answer validation, sequence integrity, time plausibility; client cannot POST scores; see design-spec §21"
+    },
+    "abusePrevention": {
+      "phoneSignup": "Rate-limit account creation by IP + generated app install ID; no covert device fingerprinting for children",
+      "limits": "Suggested v1 defaults: max 5 account creations per install per day, max 20 per IP per day, max 20 ranked attempt starts per user per hour",
+      "futureHardening": "Apple App Attest / Play Integrity can be added if scripted abuse appears"
+    },
+    "adminDashboard": {
+      "v1Tool": "AdminJS embedded in FastAPI (default)",
+      "alternative": "Retool connected to NeonDB",
+      "customReactDeferred": true
+    },
+    "deepLinking": "not required",
+    "mediaUploads": {
+      "needed": false,
+      "types": "N/A — quiz content managed via admin dashboard, not user uploads",
+      "maxSize": "N/A",
+      "storage": "N/A"
+    },
+    "timezoneHandling": "Store timestamps in UTC; display local time for leaderboard daily/weekly boundaries and admin reports"
+  },
+  "techStack": {
+    "mobileFramework": "agent's choice — Flutter recommended",
+    "backendFramework": "Python (FastAPI)",
+    "database": "NeonDB (PostgreSQL)",
+    "hosting": "agent's choice — low-cost (e.g. Railway or Render for API; NeonDB managed Postgres)",
+    "crashReporting": "Firebase Crashlytics (agent choice)"
+  },
+  "security": {
+    "dataCollected": "Mobile number, name, age, age group, gameplay progress, level attempts, leaderboard scores, IAP purchase/receipt data, ad interaction logs (non-personalized for under-13), analytics events, parental consent record for users under 13",
+    "authMethod": "v1 offers two paths only: (1) Google Sign-In or Sign in with Apple — OAuth token exchange, server-side account; (2) Phone — mobile number + name + age, no SMS OTP. No email/password, no biometric.",
+    "biometricLogin": "not offered",
+    "accountRecovery": "New device: sign in again with Google or Apple (restores account automatically). Phone-only users: re-enter mobile + name on sign-in (no OTP); if account cannot be recovered, contact support via M-31. No SMS OTP in v1.",
+    "accountDeletion": {
+      "inAppDeletionSupported": true,
+      "notes": "Apple requires in-app deletion where account creation is offered. Delete personal data and ParentalConsentRecord immediately. Retain legally required purchase/audit records only after anonymizing user linkage where possible."
+    },
+    "parentalConsent": {
+      "requiredForUnder13": true,
+      "methods": [
+        "oauth_parent_attestation — parent signs in with own Google/Apple + attestation form (Path A, default)",
+        "email_plus_confirmation — parent email receives signed link to web confirmation page (Path B, required for phone-path under-13)"
+      ],
+      "notSufficient": "Child self-attestation or checkbox alone without parent OAuth or email verification",
+      "accountStateWhilePending": "pending_parental_consent — no gameplay, no ads, no PII-linked analytics until verified",
+      "emailVerificationExpiryHours": 72,
+      "counselReviewRequired": true
+    },
+    "sessionManagement": "Persistent session until explicit sign-out; no inactivity timeout",
+    "socialLogin": {
+      "offered": true,
+      "providers": "Google Sign-In, Sign in with Apple (Apple required on iOS when Google is offered)",
+      "signInWithAppleIncluded": true
+    },
+    "dataResidency": "No strict requirement specified — agent to select cost-effective hosting; note COPPA/privacy obligations for minors",
+    "retentionPolicy": "Immediate data removal on account deletion; no extended retention window"
+  },
+  "appStore": {
+    "displayName": "Anointed",
+    "bundleId": "undecided — agent placeholder com.anointed.app until finalized",
+    "assetsExist": "need creating",
+    "ageRating": "Everyone (4+)",
+    "forceUpgrade": "required"
+  },
+  "qa": {
+    "mustNotBreak": "Sign-up and sign-in (Google, Apple, phone); age gate/parental consent flow; level map navigation; completing a level (10/10 correct under timer); level restart on wrong answer; timer scaling by difficulty; mixed question variant types per level; IAP unlock after level 5; ad display rules (13+ capped, under-13 none); server-validated leaderboard attempts (anti-cheat); leaderboard submit and periodic sync; offline practice mode; local notification opt-in and scheduling; in-app account deletion; force-upgrade block; admin dashboard content management and exportable reports",
+    "deviceCoverage": "iPhone and Android phones; iPhone and Android tablets with landscape support",
+    "minOsVersions": "iOS 15+; Android 8.0 (API 26)+"
+  },
+  "support": {
+    "inAppSupport": "required",
+    "channel": "In-app FAQ plus email contact form"
+  },
+  "devops": {
+    "releaseCadence": "Monthly updates after v1 launch"
+  },
+  "analytics": {
+    "events": "level_started, level_completed, level_failed, level_restarted, question_answered, timer_expired, ad_viewed, ad_clicked, purchase_initiated, purchase_completed, leaderboard_viewed, leaderboard_submitted, leaderboard_attempt_rejected, practice_mode_started, sign_up_started, sign_up_completed, sign_in_completed, age_gate_triggered, vpc_parent_gate_viewed, vpc_path_selected, vpc_parent_oauth_completed, vpc_attestation_submitted, vpc_email_requested, vpc_email_verified, parental_consent_completed, child_privacy_notice_acknowledged, content_manifest_checked, content_cache_updated, content_cache_update_failed, local_notification_scheduled, local_notification_opened, account_deleted, screen_view, session_start",
+    "personalization": "Adaptive difficulty — adjust question difficulty and timer pressure based on user performance history within age-appropriate bounds",
+    "reporting": "Internal web admin dashboard for operator with exportable reports (CSV/PDF); track DAU, level funnel, IAP conversion, ad impressions, and leaderboard engagement"
+  },
+  "constraints": {
+    "budget": "Not specified — minimize third-party and hosting costs",
+    "timeline": "1 week target for v1 with 100 levels built and validated by QA agent (aggressive)",
+    "teamSize": "In-house — agent-led development",
+    "inHouseOrOutsourced": "in-house"
+  }
+}

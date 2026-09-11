@@ -1,0 +1,18 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - lib/l10n/gen/**
+    - build/**
+    - android/**
+    - ios/**
+  errors:
+    # design-spec §24 acceptance rule: user-facing copy lives in ARB files.
+    # This surfaces accidental hardcoded strings in const widget constructors.
+    prefer_const_constructors: ignore
+
+linter:
+  rules:
+    always_declare_return_types: true
+    avoid_print: true
+    prefer_final_locals: true

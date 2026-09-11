@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Web client ID for Google Sign-In ID tokens (backend verification). -->
+    <string name="default_web_client_id" translatable="false">534331923421-c28ata5t344743749pl7epediju17mju.apps.googleusercontent.com</string>
+</resources>

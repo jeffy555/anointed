@@ -1,0 +1,1004 @@
+<title>Anointed Build Audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+  :root {
+    --bg:        #E9EBEE;
+    --surface:   #FFFFFF;
+    --surface-2: #F3F5F7;
+    --ink:       #171A1E;
+    --ink-2:     #454C55;
+    --muted:     #6B737D;
+    --line:      #CDD3DA;
+    --line-soft: #E1E6EB;
+    --hazard:    #C99A00;
+    --hazard-ink:#7A5D00;
+    --crit:      #A81E14;
+    --crit-bg:   #FBE9E7;
+    --major:     #A96400;
+    --major-bg:  #FBF0DF;
+    --minor:     #3F6E80;
+    --minor-bg:  #E8F0F3;
+    --ok:        #2E6B4F;
+    --ok-bg:     #E4F0E9;
+
+    --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:        #14171B;
+      --surface:   #1B1F24;
+      --surface-2: #22272D;
+      --ink:       #E7EBEF;
+      --ink-2:     #B4BCC5;
+      --muted:     #8A939D;
+      --line:      #333A42;
+      --line-soft: #272D34;
+      --hazard:    #E8B923;
+      --hazard-ink:#E8B923;
+      --crit:      #F0776A;
+      --crit-bg:   #2E1A18;
+      --major:     #E5A950;
+      --major-bg:  #2C2317;
+      --minor:     #7FB3C4;
+      --minor-bg:  #1A252A;
+      --ok:        #6FC79B;
+      --ok-bg:     #17241D;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg:        #14171B;
+    --surface:   #1B1F24;
+    --surface-2: #22272D;
+    --ink:       #E7EBEF;
+    --ink-2:     #B4BCC5;
+    --muted:     #8A939D;
+    --line:      #333A42;
+    --line-soft: #272D34;
+    --hazard:    #E8B923;
+    --hazard-ink:#E8B923;
+    --crit:      #F0776A;
+    --crit-bg:   #2E1A18;
+    --major:     #E5A950;
+    --major-bg:  #2C2317;
+    --minor:     #7FB3C4;
+    --minor-bg:  #1A252A;
+    --ok:        #6FC79B;
+    --ok-bg:     #17241D;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px 96px; }
+  .prose { max-width: 68ch; }
+
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--hazard); outline-offset: 3px; }
+
+  code, .mono { font-family: var(--mono); font-size: 0.86em; font-variant-ligatures: none; }
+  code { color: var(--ink-2); background: var(--surface-2); padding: 0.08em 0.34em; border-radius: 3px; }
+
+  /* ---------- masthead ---------- */
+  .masthead { padding: 56px 0 28px; border-bottom: 1px solid var(--line); }
+  .eyebrow {
+    font-family: var(--display); font-weight: 600; font-size: 11.5px;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+    display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 18px;
+  }
+  h1 {
+    font-family: var(--display); font-weight: 700; font-size: clamp(34px, 5.4vw, 54px);
+    line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 16px; text-wrap: balance;
+  }
+  .standfirst { font-size: 20px; line-height: 1.5; color: var(--ink-2); max-width: 60ch; margin: 0; }
+
+  .hazard-rule {
+    height: 7px; margin: 28px 0 0; border-radius: 2px;
+    background: repeating-linear-gradient(135deg,
+      var(--hazard) 0 9px, transparent 9px 18px), var(--line-soft);
+  }
+
+  /* ---------- run facts ---------- */
+  .facts {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+    gap: 1px; background: var(--line); border: 1px solid var(--line);
+    margin: 28px 0 0; border-radius: 4px; overflow: hidden;
+  }
+  .fact { background: var(--surface); padding: 14px 16px; }
+  .fact dt {
+    font-family: var(--display); font-size: 10.5px; font-weight: 600;
+    letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); margin: 0 0 5px;
+  }
+  .fact dd { margin: 0; font-family: var(--mono); font-size: 13.5px; color: var(--ink); }
+  .fact dd .sub { display: block; font-family: var(--body); font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  /* ---------- section ---------- */
+  section { margin-top: 64px; }
+  h2 {
+    font-family: var(--display); font-weight: 700; font-size: 27px; letter-spacing: -0.015em;
+    margin: 0 0 6px; padding-bottom: 10px; border-bottom: 2px solid var(--ink);
+    display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+  }
+  h2 .count { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  h3 {
+    font-family: var(--display); font-weight: 600; font-size: 15px; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--ink-2); margin: 40px 0 14px;
+  }
+  p { margin: 0 0 14px; }
+  .lede { margin-top: 18px; }
+
+  /* ---------- severity tally ---------- */
+  .tally { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 22px; }
+  .tally-item { padding: 12px 14px 13px; border-left: 4px solid; border-radius: 0 4px 4px 0; background: var(--surface); }
+  .tally-item .n { font-family: var(--display); font-weight: 700; font-size: 30px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .tally-item .lbl { font-family: var(--display); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+  .t-crit  { border-color: var(--crit); }  .t-crit .n  { color: var(--crit); }
+  .t-major { border-color: var(--major); } .t-major .n { color: var(--major); }
+  .t-minor { border-color: var(--minor); } .t-minor .n { color: var(--minor); }
+  .t-ok    { border-color: var(--ok); }    .t-ok .n    { color: var(--ok); }
+
+  /* ---------- modes ---------- */
+  .modes { display: flex; flex-direction: column; gap: 0; margin-top: 22px; border-top: 1px solid var(--line); }
+  .mode { display: grid; grid-template-columns: 1fr auto; gap: 6px 20px; padding: 16px 0 18px; border-bottom: 1px solid var(--line-soft); }
+  .mode h4 { font-family: var(--display); font-weight: 600; font-size: 18px; margin: 0; letter-spacing: -0.01em; }
+  .mode .route { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .mode p { grid-column: 1 / -1; margin: 6px 0 0; color: var(--ink-2); max-width: 72ch; }
+  .pill {
+    align-self: start; font-family: var(--display); font-size: 10.5px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 9px; border-radius: 999px; white-space: nowrap;
+  }
+  .p-ok    { background: var(--ok-bg);    color: var(--ok); }
+  .p-part  { background: var(--major-bg); color: var(--major); }
+  .p-stub  { background: var(--minor-bg); color: var(--minor); }
+  .p-none  { background: var(--surface-2); color: var(--muted); }
+
+  /* ---------- findings ---------- */
+  .finding {
+    display: grid; grid-template-columns: 62px 1fr; gap: 0 18px;
+    padding: 20px 0 22px; border-bottom: 1px solid var(--line-soft);
+  }
+  .finding:first-of-type { border-top: 1px solid var(--line); }
+  .fid {
+    font-family: var(--mono); font-weight: 700; font-size: 13px; letter-spacing: 0.02em;
+    padding-top: 3px;
+  }
+  .f-crit .fid  { color: var(--crit); }
+  .f-major .fid { color: var(--major); }
+  .f-minor .fid { color: var(--minor); }
+  .finding h4 { font-family: var(--display); font-weight: 600; font-size: 19px; margin: 0 0 4px; letter-spacing: -0.012em; text-wrap: balance; }
+  .where { font-family: var(--mono); font-size: 12px; color: var(--muted); margin: 0 0 10px; word-break: break-word; }
+  .finding p { margin: 0 0 10px; color: var(--ink-2); }
+  .finding p:last-child { margin-bottom: 0; }
+  .finding strong { color: var(--ink); font-weight: 600; }
+  .fix {
+    margin-top: 10px; padding: 9px 12px; background: var(--surface-2);
+    border-left: 2px solid var(--line); font-size: 15.5px; color: var(--ink-2);
+  }
+  .fix b { font-family: var(--display); font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 3px; }
+
+  /* ---------- shipped ---------- */
+  .restanding {
+    margin: 24px 0 0; max-width: 68ch; font-size: 16px; color: var(--muted);
+    padding-left: 14px; border-left: 2px solid var(--line);
+  }
+  .fid-row { display: flex; flex-direction: column; gap: 7px; padding-top: 3px; }
+  .fid-row .fid { padding-top: 0; }
+  .tag {
+    font-family: var(--display); font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 3px 6px; border-radius: 3px; white-space: nowrap;
+    align-self: start;
+  }
+  .tag-fixed { background: var(--ok-bg); color: var(--ok); }
+  .tag-open  { background: var(--crit-bg); color: var(--crit); }
+  .shipped {
+    margin-top: 12px; padding: 11px 13px; border-left: 3px solid var(--ok);
+    background: var(--ok-bg); font-size: 15.5px; color: var(--ink-2); border-radius: 0 4px 4px 0;
+  }
+  .shipped b {
+    font-family: var(--display); font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ok); display: block; margin-bottom: 4px;
+  }
+  .shipped code { background: transparent; padding: 0; color: var(--ink); }
+  .finding.f-done h4 { color: var(--ink); }
+  @media (max-width: 620px) {
+    .fid-row { flex-direction: row; align-items: center; gap: 10px; }
+  }
+
+  /* ---------- matrix ---------- */
+  .matrix-note { font-size: 15px; color: var(--muted); margin-top: 8px; }
+  .scroller { overflow-x: auto; margin-top: 20px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); }
+  table.matrix { border-collapse: collapse; width: 100%; min-width: 640px; font-family: var(--mono); font-size: 13px; }
+  table.matrix th, table.matrix td { padding: 8px 10px; text-align: center; border-bottom: 1px solid var(--line-soft); }
+  table.matrix thead th {
+    font-family: var(--display); font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--muted); background: var(--surface-2);
+    border-bottom: 1px solid var(--line); position: sticky; top: 0;
+  }
+  table.matrix th.stop { text-align: left; font-family: var(--mono); font-size: 12.5px; font-weight: 400; color: var(--ink-2); white-space: nowrap; }
+  table.matrix thead th.stop { font-family: var(--display); font-size: 10.5px; font-weight: 600; color: var(--muted); }
+  table.matrix tbody tr:last-child td, table.matrix tbody tr:last-child th { border-bottom: none; }
+  td.pass { color: var(--muted); }
+  td.fail { color: var(--crit); font-weight: 700; font-variant-numeric: tabular-nums; background: var(--crit-bg); }
+  td.was  { color: var(--crit); font-weight: 700; font-variant-numeric: tabular-nums; background: var(--crit-bg); }
+  td.now  { color: var(--ok); background: var(--ok-bg); font-weight: 700; font-size: 11.5px; letter-spacing: 0.04em; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 12px; font-size: 13.5px; color: var(--muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; }
+  .swatch { width: 12px; height: 12px; border-radius: 2px; display: inline-block; }
+
+  /* ---------- readiness ---------- */
+  .gates { margin-top: 22px; display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--line); }
+  .gate { display: grid; grid-template-columns: 26px 1fr auto; gap: 14px; align-items: start; padding: 13px 0; border-bottom: 1px solid var(--line-soft); }
+  .gate .mark { font-family: var(--mono); font-weight: 700; font-size: 15px; line-height: 1.5; }
+  .gate .mark.no  { color: var(--crit); }
+  .gate .mark.yes { color: var(--ok); }
+  .gate .mark.part{ color: var(--major); }
+  .gate .g-body { max-width: 74ch; }
+  .gate .g-title { font-family: var(--display); font-weight: 600; font-size: 16px; }
+  .gate .g-note { font-size: 15px; color: var(--muted); margin-top: 2px; }
+  .gate .g-ref { font-family: var(--mono); font-size: 11.5px; color: var(--muted); white-space: nowrap; padding-top: 4px; }
+
+  /* ---------- priority list ---------- */
+  ol.prio { list-style: none; counter-reset: p; padding: 0; margin: 22px 0 0; border-top: 1px solid var(--line); }
+  ol.prio li {
+    counter-increment: p; display: grid; grid-template-columns: 34px 1fr auto;
+    gap: 4px 16px; padding: 15px 0 16px; border-bottom: 1px solid var(--line-soft);
+  }
+  ol.prio li::before {
+    content: counter(p, decimal-leading-zero);
+    font-family: var(--mono); font-size: 12px; color: var(--muted); padding-top: 4px;
+  }
+  ol.prio .a-title { font-family: var(--display); font-weight: 600; font-size: 17px; }
+  ol.prio .a-note { grid-column: 2 / 3; font-size: 15.5px; color: var(--ink-2); margin-top: 3px; max-width: 70ch; }
+  ol.prio .a-refs { grid-column: 2 / 3; font-family: var(--mono); font-size: 11.5px; color: var(--muted); margin-top: 6px; }
+
+  .scope { margin-top: 64px; padding: 20px 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; }
+  .scope h3 { margin-top: 0; }
+  .scope ul { margin: 0; padding-left: 20px; color: var(--ink-2); font-size: 15.5px; }
+  .scope li { margin-bottom: 6px; }
+
+  @media (max-width: 620px) {
+    body { font-size: 16px; }
+    .finding { grid-template-columns: 1fr; gap: 4px; }
+    .fid { padding-top: 0; }
+    .mode { grid-template-columns: 1fr; }
+    ol.prio li { grid-template-columns: 28px 1fr; }
+    ol.prio .a-note, ol.prio .a-refs { grid-column: 2 / -1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow">
+      <span>Anointed &middot; Flutter mobile client</span>
+      <span>QA &amp; production-readiness audit</span>
+      <span>Audited &amp; remediated 10 Sep 2026</span>
+    </div>
+    <h1>Anointed Build Audit</h1>
+    <p class="standfirst">
+      Three game modes ship and all three are playable end to end. The audit found 5 critical and 7
+      major defects. <strong>Twenty-three of the twenty-four are now closed</strong>; the one left
+      is an audio re-encode blocked on tooling, not on a decision. Static analysis went from 12
+      issues to none. One caveat, below: C4 was over-called &mdash; the requirement it named was
+      already met, and measuring proved it.
+    </p>
+    <div class="hazard-rule" aria-hidden="true"></div>
+
+    <dl class="facts">
+      <div class="fact">
+        <dt>Findings fixed</dt>
+        <dd>23 of 24<span class="sub">everything but the audio re-encode</span></dd>
+      </div>
+      <div class="fact">
+        <dt>Test suite</dt>
+        <dd>275 / 275 pass<span class="sub">was 156 &middot; 3 new suites</span></dd>
+      </div>
+      <div class="fact">
+        <dt>Release build</dt>
+        <dd>AAB 45.4 MB<span class="sub">signed &middot; R8 clean &middot; 16 KB verified</span></dd>
+      </div>
+      <div class="fact">
+        <dt>Static analysis</dt>
+        <dd>no issues<span class="sub">was 12 &middot; clean</span></dd>
+      </div>
+      <div class="fact">
+        <dt>Toolchain</dt>
+        <dd>Flutter 3.24.5<span class="sub">Nov 2024 &middot; Dart 3.5.4</span></dd>
+      </div>
+      <div class="fact">
+        <dt>Backend suite</dt>
+        <dd>not run<span class="sub">pytest absent from .venv</span></dd>
+      </div>
+    </dl>
+
+    <p class="restanding">
+      Everything below is the audit as written, with each fixed finding carrying what actually
+      shipped against it. Nothing was struck out: the defect is the useful record, and the fix only
+      means something next to it.
+    </p>
+  </header>
+
+  <section>
+    <h2>Game modes review <span class="count">3 shipped &middot; 2 placeholders</span></h2>
+    <p class="lede prose">
+      There is no multiplayer, co-op or realtime play, and that is a deliberate v1 decision rather
+      than a gap. Competition is asynchronous, through the ranked leaderboard. All three shipped
+      modes were playable end to end when this audit began; what follows describes them as they
+      stand after the fixes.
+    </p>
+
+    <div class="modes">
+
+      <div class="mode">
+        <div>
+          <h4>Main Journey &mdash; ranked</h4>
+          <div class="route">Routes.gameplay &middot; 100 levels &middot; server-authoritative</div>
+        </div>
+        <span class="pill p-ok">Functional</span>
+        <p>
+          Attempts open server-side, every answer is a separate validated request, and the score is
+          never computed on the client. Timer resets per question; sequence violations resync to the
+          server's index; an offline submit is held and retried with the same payload rather than
+          costing the player the attempt. Failure, timer-expiry, ad-break and IAP paths all exist.
+        </p>
+      </div>
+
+      <div class="mode">
+        <div>
+          <h4>Practice &mdash; offline</h4>
+          <div class="route">Routes.practiceGameplay &middot; gzipped content pack</div>
+        </div>
+        <span class="pill p-ok">Functional</span>
+        <p>
+          Downloads and caches a content pack, plays without a connection, and refuses levels the
+          pack does not cover with a specific message rather than an empty screen. Result screen
+          steers back to ranked play when the level is unlocked there.
+        </p>
+      </div>
+
+      <div class="mode">
+        <div>
+          <h4>Kids Zone &mdash; adventures</h4>
+          <div class="route">Routes.kidsZone &middot; 4 adventures &middot; 16 stops &middot; 12 distinct engines</div>
+        </div>
+        <span class="pill p-ok">Functional</span>
+        <p>
+          Creation Garden, Battle of Siddim, Noah's Ark and Baby Moses each run an animated intro
+          plus three levels on purpose-built engines &mdash; archery, ark-building, animal care,
+          a river runner, a plague-ordering puzzle and a sea-crossing rhythm game. Content-safety
+          substitutions are handled thoughtfully and documented.
+        </p>
+        <p>
+          Every layout failure in this report lived here, and all of them are now fixed and pinned
+          by a 108-case suite. Stars persist per stop, so finishing one leaves something to come
+          back and beat; the zone locks itself to portrait; and its music and narration stop when
+          the app does.
+        </p>
+      </div>
+
+      <div class="mode">
+        <div>
+          <h4>Heroes Path &middot; Wise Kings</h4>
+          <div class="route">kids_zone_adventures.dart &middot; 1 stop each</div>
+        </div>
+        <span class="pill p-stub">Placeholder</span>
+        <p>
+          Both are labelled "Coming soon" but render in the hub as ordinary, tappable adventures
+          backed by the generic <code>explorer</code> and <code>storyPath</code> mini-games. A child
+          who taps them gets a real but empty-feeling game rather than a locked door. Both now lay
+          out correctly at every size &mdash; <code>kings_1</code> was among the worst offenders,
+          overflowing by 509&nbsp;px at large text &mdash; but laying out correctly and being worth
+          opening are different things, and these are still placeholders.
+        </p>
+      </div>
+
+      <div class="mode">
+        <div>
+          <h4>Multiplayer / co-op / realtime</h4>
+          <div class="route">out of scope for v1</div>
+        </div>
+        <span class="pill p-none">Not built</span>
+        <p>
+          Documented as out of scope: <code>requirements.json</code> records realtime as "not
+          required". The ranked leaderboard is therefore the only social surface. Its three-minute
+          refresh used to run for the life of the app; it now follows the visible tab and the app
+          lifecycle (finding&nbsp;J4).
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Bug report <span class="count">24 found &middot; 23 fixed &middot; 1 open</span></h2>
+
+    <div class="tally">
+      <div class="tally-item t-ok"><div class="n">23</div><div class="lbl">Fixed</div></div>
+      <div class="tally-item t-crit"><div class="n">0</div><div class="lbl">Critical open</div></div>
+      <div class="tally-item t-major"><div class="n">0</div><div class="lbl">Major open</div></div>
+      <div class="tally-item t-minor"><div class="n">1</div><div class="lbl">Minor open</div></div>
+    </div>
+
+    <h3>Critical &mdash; blocks a store release</h3>
+
+    <div class="finding f-crit f-done">
+      <div class="fid-row"><span class="fid">C1</span><span class="tag tag-fixed">Fixed</span></div>
+      <div>
+        <h4>A release build with no <code>--dart-define</code> ships pointing at a developer laptop</h4>
+        <p class="where">lib/core/config.dart:24&ndash;28</p>
+        <p>
+          <code>apiBaseUrl</code> falls back to <code>http://10.0.2.2:8000</code> on Android and
+          <code>http://localhost:8000</code> elsewhere, with no <code>kReleaseMode</code> guard. Any
+          release built without <code>API_BASE_URL</code> set is a fully installable app in which
+          sign-in, the level map, ranked gameplay, the leaderboard and IAP entitlement all fail. The
+          URL is also cleartext, which Android blocks by default from API&nbsp;28 &mdash; so the
+          failure is silent and total rather than partially working.
+        </p>
+        <div class="shipped"><b>Shipped 10 Sep 2026</b><code>AppConfig.releaseConfigErrors</code> refuses a release build that was never pointed at a backend, or pointed at one over plain HTTP, and <code>main()</code> throws on it before the first frame &mdash; ahead of <code>CrashReporting.runGuarded</code>, so it fails loudly rather than being swallowed by the very handler meant to report it. Empty in debug and profile, so the loopback defaults keep working as the development convenience they exist for.</div>
+      </div>
+    </div>
+
+    <div class="finding f-crit f-done">
+      <div class="fid-row"><span class="fid">C2</span><span class="tag tag-fixed">Fixed</span></div>
+      <div>
+        <h4>Android release is signed with the debug keystore</h4>
+        <p class="where">android/app/build.gradle:45&ndash;48</p>
+        <p>
+          <code>signingConfig = signingConfigs.debug</code>, with the scaffold's own TODO still in
+          place. Play will reject the upload. The release block also has no
+          <code>minifyEnabled</code>, <code>shrinkResources</code> or ProGuard rules, so the
+          shipped APK is unshrunk and unobfuscated.
+        </p>
+        <div class="shipped"><b>Shipped 10 Sep 2026</b>A real <code>signingConfigs.release</code> now exists &mdash; it did not before, which mattered more than it looked: the build referenced it behind an <code>if key.properties exists</code> branch, so the reference was unresolvable but <em>masked</em> while the file was absent, and would have failed at configuration time the first moment anyone tried to sign for real. It reads <code>android/key.properties</code> (gitignored, with a committed <code>.example</code>) and names any missing key. <code>minifyEnabled</code>, <code>shrinkResources</code> and a <code>proguard-rules.pro</code> are wired. Verified by building: R8 and resource shrinking ran clean, and <code>apksigner</code> confirmed a release APK signed with a throwaway certificate rather than the debug one &mdash; then the test credentials were removed.</div>
+      </div>
+    </div>
+
+    <div class="finding f-crit f-done">
+      <div class="fid-row"><span class="fid">C3</span><span class="tag tag-fixed">Fixed</span></div>
+      <div>
+        <h4>Both platforms carry Google's sample AdMob application IDs</h4>
+        <p class="where">android/app/src/main/AndroidManifest.xml:35 &middot; ios/Runner/Info.plist:48</p>
+        <p>
+          <code>ca-app-pub-3940256099942544~3347511713</code> and
+          <code>&hellip;~1458002511</code> are the public test IDs. Shipping them means no revenue
+          and a policy problem. iOS additionally has no <code>SKAdNetworkItems</code> array, so ad
+          attribution would not work even once the real ID is in.
+        </p>
+        <p>
+          The runtime ad gating itself is sound: an under-13 account never initialises the SDK,
+          the server withholds the unit IDs independently, and child-directed treatment plus a
+          G content rating are set before <code>initialize()</code>. The problem is only the IDs.
+        </p>
+        <div class="shipped"><b>Shipped 10 Sep 2026</b>Android now takes the AdMob id from <code>-PadmobAppId</code> as a manifest placeholder, and a Gradle <code>verifyReleaseConfig</code> task fails <code>assembleRelease</code> and <code>bundleRelease</code> while it is still Google&rsquo;s sample &mdash; the same fail-at-build-time shape as C1&rsquo;s Dart guard. iOS has no equivalent hook, so its id, the SKAdNetwork list and the distribution identity are carried by a written checklist instead. <code>ITSAppUsesNonExemptEncryption</code> and Google&rsquo;s own SKAdNetwork id were added. <strong>The real ids are account secrets and are still not in the build</strong> &mdash; what changed is that shipping the samples is now something the build refuses rather than something nobody notices.</div>
+      </div>
+    </div>
+
+    <div class="finding f-crit f-done">
+      <div class="fid-row"><span class="fid">C4</span><span class="tag tag-fixed">Fixed</span></div>
+      <div>
+        <h4>The toolchain predates current Play submission requirements</h4>
+        <p class="where">pubspec.yaml:11 &middot; flutter 3.24.5 (13 Nov 2024)</p>
+        <p>
+          <code>targetSdk</code> resolves to Flutter&nbsp;3.24's default of 34, and 3.24 does not
+          emit 16&nbsp;KB-page-aligned native libraries. Both are hard gates on current Play
+          uploads. This is not a code change &mdash; it is an SDK upgrade with a regression pass
+          behind it, so it needs scheduling now rather than at submission.
+        </p>
+        <div class="shipped"><b>Corrected 10 Sep 2026 &mdash; this finding was over-called</b>The <code>targetSdk</code> half was real and is fixed: it is pinned to 36 rather than inheriting Flutter&rsquo;s 34. <strong>The 16&nbsp;KB half was wrong.</strong> The claim that Flutter 3.24.5 cannot produce 16&nbsp;KB-aligned libraries was reasoning from the SDK&rsquo;s age rather than from the build, and the build disagrees. Measured on the actual release APK: every native library passes, <code>libflutter.so</code> at 64&nbsp;KB alignment and the rest at 16&nbsp;KB. Checked twice by different means &mdash; ELF program headers parsed directly, then confirmed with the NDK&rsquo;s <code>llvm-readelf</code> (<code>0x10000</code>, <code>0x4000</code>) &mdash; and the packaging side confirmed with <code>zipalign -c -P 16</code>, which reports every <code>.so</code> stored uncompressed and page-aligned: <em>Verification successful</em>. <strong>No SDK upgrade is required to ship.</strong> Upgrading from a November 2024 toolchain is still worth scheduling as maintenance &mdash; and <code>targetSdk 36</code> brings Android 15 edge-to-edge enforcement, which wants checking on a device &mdash; but neither is a blocker, and this report should not have said otherwise.</div>
+      </div>
+    </div>
+
+    <div class="finding f-crit f-done">
+      <div class="fid-row"><span class="fid">C5</span><span class="tag tag-fixed">Fixed</span></div>
+      <div>
+        <h4>Kids Zone music and narration keep playing after the app is backgrounded</h4>
+        <p class="where">lib/app.dart:70 &middot; lib/services/kids_zone_audio_service.dart</p>
+        <p>
+          <code>didChangeAppLifecycleState</code> returns immediately unless the state is
+          <code>resumed</code> &mdash; there is no <code>paused</code> or <code>inactive</code>
+          branch anywhere in the app. The looping <code>audioplayers</code> ambience and any
+          in-flight <code>flutter_tts</code> narration therefore continue when the child locks the
+          screen, takes a call, or switches apps. On a children's title this is the kind of thing
+          that draws a store review comment, and it is the single most likely one-star complaint
+          in the build.
+        </p>
+        <div class="shipped"><b>Shipped 10 Sep 2026</b>Ambience pauses and TTS stops on <code>paused</code>, <code>hidden</code> and <code>detached</code>. <code>inactive</code> is deliberately ignored &mdash; iOS passes through it on the way to <code>hidden</code>, so acting there would stutter the music every time the notification shade is pulled down. The service needed <em>two</em> pause flags, not one: backgrounding stops speech, which completes the <code>speak()</code> the read-aloud button is awaiting, whose <code>finally</code> calls straight into <code>resumeAfterSpeech()</code> &mdash; with a single flag, locking the phone mid-narration would have <em>started</em> the music.</div>
+      </div>
+    </div>
+
+    <h3>Major &mdash; ship-visible defects</h3>
+
+    <div class="finding f-major f-done">
+      <div class="fid-row"><span class="fid">J1</span><span class="tag tag-fixed">Fixed</span></div>
+      <div>
+        <h4>21 of 72 Kids Zone render configurations overflow</h4>
+        <p class="where">measured 10 Sep 2026 &mdash; see the matrix below</p>
+        <p>
+          Nothing in the app calls <code>setPreferredOrientations</code>, and both manifests permit
+          landscape on phones, so every stop must lay out at 720&times;360. Six do not. Four more
+          overflow at <strong>360&times;720 portrait at default text size</strong> &mdash; a
+          common low-end Android size &mdash; including three of the four adventure intros, which
+          are the first screen a child sees in each world. Eleven overflow at text scale 1.6, well
+          inside the app's own clamp of 2.4 and reachable through the in-app "Large text" toggle.
+        </p>
+        <div class="shipped"><b>Shipped 10 Sep 2026</b><strong>21 broken frames &rarr; 0</strong>, measured across a wider matrix than the one that found them: 18 stops &times; 6 frames, up to the app&rsquo;s own 2.4 text ceiling. Three shared widgets carry it &mdash; the shell&rsquo;s cue card and action are capped at 38% / 40% and scroll; <code>KidsZoneIntroPanel</code> replaced four hand-built copies of the same broken panel; <code>KidsZoneBoardLayout</code> protects the board and lets the chrome scroll. Fixed-size gauges and controls now scale <em>down</em> rather than out, and the animal emoji is marked <code>TextScaler.noScaling</code> because it is a picture, not text. Kids Zone is locked to portrait &mdash; but the landscape overflows were fixed anyway, since the lock is a request large screens can decline.</div>
+      </div>
+    </div>
+
+    <div class="finding f-major f-done">
+      <div class="fid-row"><span class="fid">J2</span><span class="tag tag-fixed">Fixed</span></div>
+      <div>
+        <h4>Typography is fetched from Google at runtime, so an offline first launch loses the entire visual identity</h4>
+        <p class="where">pubspec.yaml (no <code>fonts:</code> section) &middot; kids_zone_tokens.dart:33 &middot; parchment_codex_tokens.dart:40,58</p>
+        <p>
+          Nunito, Karla and Cormorant Garamond come from <code>google_fonts</code> with no bundled
+          files and no <code>allowRuntimeFetching = false</code>. On a first run without a
+          connection every screen silently falls back to Roboto &mdash; and the Kids Zone
+          documentation's claim that the zone "needs no backend, it is fully offline" is not true
+          of its typography.
+        </p>
+        <p>
+          <strong>There is a second edge here.</strong> That fetch is an unsolicited request to a
+          Google host, carrying the device's IP, on first launch &mdash; before and independent of
+          the parental-consent gate, on a product whose whole compliance posture is built around
+          not doing that. Worth a look from whoever is signing off the privacy policy.
+        </p>
+        <div class="shipped"><b>Shipped 10 Sep 2026</b><code>google_fonts</code> removed from the dependency tree outright rather than disabled by flag. Only three call sites used it, so deleting the package makes the network path impossible by construction instead of by a setting someone can forget. The 11 static instances the app actually renders are bundled (1.5&nbsp;MB) and named through <code>AnointedFonts</code>. This closes the offline-launch fallback and the unconsented third-party request together.</div>
+      </div>
+    </div>
+
+    <div class="finding f-major f-done">
+      <div class="fid-row"><span class="fid">J3</span><span class="tag tag-fixed">Fixed</span></div>
+      <div>
+        <h4>A stale restore timer can resolve a later purchase flow</h4>
+        <p class="where">lib/services/iap_service.dart:225&ndash;231</p>
+        <p>
+          The 8-second fallback that rescues a silent <code>restorePurchases()</code> checks the
+          <code>_pending</code> <em>field</em>, not the completer it was created for. Sequence: a
+          restore fails at 2&nbsp;s and completes; the user taps Buy at 4&nbsp;s, creating a new
+          <code>_pending</code>; at 8&nbsp;s the old timer fires, sees a live pending completer, and
+          finishes the <em>purchase</em> flow with <code>nothingToRestore</code> or
+          <code>alreadyOwned</code> while the store sheet is still open. The user is routed to the
+          wrong screen for a transaction that may still complete. The timer is also never cancelled
+          in <code>dispose()</code>.
+        </p>
+        <div class="shipped"><b>Shipped 10 Sep 2026</b>The fallback is now bound to the completer it was armed for via <code>identical</code>, re-checked after the <code>serverStatus()</code> round trip &mdash; itself a window the flow can move in &mdash; held in a field, and cancelled in <code>_completePending</code> as well as <code>dispose</code>. It can no longer outlive the flow it belongs to, whatever resolves that flow.</div>
+      </div>
+    </div>
+
+    <div class="finding f-major f-done">
+      <div class="fid-row"><span class="fid">J4</span><span class="tag tag-fixed">Fixed</span></div>
+      <div>
+        <h4>The leaderboard polls every three minutes for the life of the app</h4>
+        <p class="where">lib/features/leaderboard/leaderboard_screen.dart:45 &middot; home_shell.dart:66</p>
+        <p>
+          <code>HomeShell</code> holds the four tabs in an <code>IndexedStack</code>, so the
+          leaderboard stays mounted whichever tab is showing &mdash; and the shell stays mounted
+          beneath every pushed route. The timer therefore keeps firing during ranked gameplay,
+          during ad breaks, throughout the Kids Zone, and while the app is backgrounded. It is
+          gated on neither tab visibility nor lifecycle.
+        </p>
+        <div class="shipped"><b>Shipped 10 Sep 2026</b>The poll now follows both signals it should always have followed: the shell tells the tab when it is the visible one, and the screen observes the app lifecycle itself. It starts on selection and on resume, stops on deselection and on background.</div>
+      </div>
+    </div>
+
+    <div class="finding f-major f-done">
+      <div class="fid-row"><span class="fid">J5</span><span class="tag tag-fixed">Fixed</span></div>
+      <div>
+        <h4>Kids Zone progress survives sign-out and account deletion</h4>
+        <p class="where">lib/core/local_store.dart:222&ndash;234</p>
+        <p>
+          <code>clearAccountScopedState()</code> clears the token, cached profile, level map,
+          leaderboard, notification flags, analytics queue and current level &mdash; but not
+          <code>kids_zone_completed_stops</code> or the <code>kids_zone_tutorial_*</code> flags. On
+          a shared family device, the second child signs in and finds the first child's adventures
+          already completed and unlocked. It also means a deletion request leaves child-generated
+          play data on the device.
+        </p>
+        <div class="shipped"><b>Shipped 10 Sep 2026</b><code>clearAccountScopedState()</code> now clears the completed stops, the stars, and every <code>kids_zone_tutorial_*</code> key. The install id is deliberately left alone &mdash; it is not personal data, and regenerating it would break the abuse controls it exists for. Both halves are pinned by tests.</div>
+      </div>
+    </div>
+
+    <div class="finding f-major f-done">
+      <div class="fid-row"><span class="fid">J6</span><span class="tag tag-fixed">Fixed</span></div>
+      <div>
+        <h4>Stars are computed, shown once, and thrown away</h4>
+        <p class="where">local_store.dart:207 &middot; every game's <code>_finish()</code></p>
+        <p>
+          All twelve engines derive a considered 1&ndash;3 star score &mdash; archery accuracy and
+          breaches, ark misses, herd happiness, wrong plague attempts, scored sea beats &mdash; and
+          the celebration screen displays it. <code>markKidsZoneStopComplete()</code> then persists
+          a bare stop ID. The hub can only ever show <em>n</em>&nbsp;of&nbsp;<em>m</em> done. For a
+          children's game this removes the entire replay loop: there is nothing to beat, and no
+          reason to play a stop twice.
+        </p>
+        <div class="shipped"><b>Shipped 10 Sep 2026</b>Best-of-run stars are persisted per stop and rendered on the hub rows &mdash; filled for what was earned, hollow for what is still there to go back for. Best rather than latest, so a child who replays for fun and does worse never loses a star they already have.</div>
+      </div>
+    </div>
+
+    <div class="finding f-major f-done">
+      <div class="fid-row"><span class="fid">J7</span><span class="tag tag-fixed">Fixed</span></div>
+      <div>
+        <h4>Double-tapping "finish" completes a stop twice</h4>
+        <p class="where">river_rescue_game.dart:439 &middot; plague_sort_game.dart:263 &middot; archery_game.dart:462 &middot; animal_care_game.dart:277</p>
+        <p>
+          The summary card wires <code>onPressed: onFinish</code> with no disable-after-tap, and
+          <code>KidsZoneGameScreen._complete()</code> awaits a write before navigating. Two taps
+          inside that window run the whole path twice: two
+          <code>kids_zone_stop_completed</code> events for one completion, and two
+          <code>pushReplacementNamed</code> calls. Children double-tap. Sea Crossing already guards
+          this with a <code>_finished</code> flag; the other four do not.
+        </p>
+        <div class="shipped"><b>Shipped 10 Sep 2026</b>One re-entrancy guard at the router rather than five in the games, which covers all eighteen at once and cannot be forgotten by the nineteenth.</div>
+      </div>
+    </div>
+
+    <h3>Minor &mdash; polish, hygiene, and small correctness</h3>
+
+    <div class="finding f-minor f-done">
+      <div class="fid-row"><span class="fid">N1</span><span class="tag tag-fixed">Fixed</span></div>
+      <div>
+        <h4>Page padding is doubled on three screens by an <code>EdgeInsets.horizontal</code> misread</h4>
+        <p class="where">level_map_screen.dart:164,166,189,191,227,229 &middot; kids_zone_hub_screen.dart:117,119 &middot; kids_zone_complete_screen.dart:66</p>
+        <p>
+          <code>EdgeInsets.horizontal</code> returns left&nbsp;+&nbsp;right, not one side. These
+          call sites feed it back in as a single-side value, so the level map and Kids Zone hub sit
+          at 32&nbsp;px on a phone and 64&nbsp;px on a tablet instead of 16 and 32. The completion
+          screen compounds it: <code>ContentColumn</code> already applies the page padding, then an
+          inner <code>Padding</code> adds 32 more. <code>practice_hub_screen.dart:225</code> divides
+          by two and is the one correct use &mdash; which is what makes the inset inconsistent
+          between tabs.
+        </p>
+        <div class="shipped"><b>Shipped 10 Sep 2026</b><code>Layout.pageInset(context)</code> now returns the single number the call sites actually wanted, and all nine use it. Fixing it at the call sites alone would have left the trap in place for the next screen &mdash; <code>pagePadding(context).horizontal</code> still reads like "the horizontal padding" and still means left <em>plus</em> right.</div>
+      </div>
+    </div>
+
+    <div class="finding f-minor">
+      <div class="fid-row"><span class="fid">N2</span><span class="tag tag-open">Open</span></div>
+      <div>
+        <h4>16&nbsp;MB of uncompressed WAV for three background loops</h4>
+        <p class="where">assets/audio/kids_zone/*.wav &mdash; 3 &times; 5.3&nbsp;MB</p>
+        <p>
+          Three 60-second mono 44.1&nbsp;kHz WAVs make up essentially the whole asset bundle.
+          Re-encoding to OGG or AAC takes it to roughly one megabyte total at no audible cost,
+          on a product whose audience is largely on entry-level Android hardware and metered data.
+        </p>
+        <div class="fix"><b>Not done &mdash; and the advice above was incomplete</b>Source confirmed: three 60-second mono 44.1&nbsp;kHz 16-bit files, 5.05&nbsp;MB each. No audio encoder is installed here, and fetching one ran at about 1&nbsp;MB a minute against an 80&nbsp;MB download &mdash; not a proportionate spend for a minor finding, so it was stopped rather than left running. <code>scripts/encode_kids_zone_audio.py</code> is ready for whoever has ffmpeg. It targets <strong>AAC in M4A</strong> rather than the OGG this report originally suggested, for two reasons worth knowing before anyone runs it: <code>audioplayers</code> on iOS is AVAudioPlayer, which cannot decode Vorbis at all, and MP3 carries encoder delay the container does not describe, so a track that loops under gameplay gaps audibly every time it comes round. "No audible cost" was too glib &mdash; M4A is close to gapless, not exactly gapless, and this is background music that loops for as long as a child plays.</div>
+      </div>
+    </div>
+
+    <div class="finding f-minor f-done">
+      <div class="fid-row"><span class="fid">N3</span><span class="tag tag-fixed">Fixed</span></div>
+      <div>
+        <h4>No <code>RepaintBoundary</code> anywhere in the app</h4>
+        <p class="where">parted_sea_view.dart, moses_scene_view.dart, archery_game.dart (<code>shouldRepaint =&gt; true</code>)</p>
+        <p>
+          The full-screen animated scenes repaint every frame by design, but they share a layer with
+          their HUD, so the score, hearts and buttons are re-rasterised at 60&nbsp;fps alongside
+          them. The frame loops themselves are well built &mdash; a <code>_frame</code>
+          <code>ValueNotifier</code> rather than a per-frame <code>setState</code> &mdash; so this
+          is the one cheap win left. Separately, <code>BrandBackground</code> paints four gradient
+          orbs behind every screen and is fully occluded on nearly all of them.
+        </p>
+        <div class="shipped"><b>Shipped 10 Sep 2026</b>All seven full-screen animated scenes &mdash; the parted sea, the Nile, Egypt under the plagues, the creation world, the Siddim valley, the ark and the Moses intro &mdash; now sit in their own layer, so their per-frame repaints stop dragging the HUD along with them. The frame loops themselves needed nothing: they were already driving a <code>ValueNotifier</code> rather than calling <code>setState</code> every frame.</div>
+      </div>
+    </div>
+
+    <div class="finding f-minor f-done">
+      <div class="fid-row"><span class="fid">N4</span><span class="tag tag-fixed">Fixed</span></div>
+      <div>
+        <h4>Tablet navigation rail gives all four destinations the same icon</h4>
+        <p class="where">lib/features/shell/home_shell.dart:100&ndash;104</p>
+        <p>
+          Every <code>NavigationRailDestination</code> uses <code>Icons.circle_outlined</code> /
+          <code>Icons.circle</code>. Map, Leaderboard, Practice and Profile are distinguishable only
+          by their labels on the layout where the icons are largest.
+        </p>
+        <div class="shipped"><b>Shipped 10 Sep 2026</b>Each destination now has its own outline/filled pair &mdash; map, trophy, school, person &mdash; so the rail reads at a glance on the one layout where the icon is largest and the label smallest. The icons are paired with the labels in one list rather than derived from them, which is what let all four drift to the same circle in the first place.</div>
+      </div>
+    </div>
+
+    <div class="finding f-minor f-done">
+      <div class="fid-row"><span class="fid">N5</span><span class="tag tag-fixed">Fixed</span></div>
+      <div>
+        <h4>Adventure and stop copy sits outside the ARB</h4>
+        <p class="where">lib/features/kids_zone/kids_zone_adventures.dart</p>
+        <p>
+          The rest of the app is exemplary here &mdash; a grep for hard-coded
+          <code>Text('&hellip;')</code> across 132 files returns three hits, all numeric
+          interpolation. But every adventure title, subtitle and stop teaser is an English literal
+          in the catalogue, rendered directly by the hub. They are the largest untranslatable
+          surface in the product.
+        </p>
+        <div class="shipped"><b>Shipped 10 Sep 2026</b>All 48 strings &mdash; six adventure names and subtitles, eighteen stop names and teasers &mdash; are in <code>app_en.arb</code>. The catalogue keeps ids, order, colour and which game a stop runs; everything a player reads resolves through <code>kids_zone_strings.dart</code>. Written as switches on the id rather than a map, because <code>l10n.kidsZoneStopArk1Title</code> is a real getter and a typo is a compile error where a string key would only fail on a device &mdash; the same reasoning behind <code>plagueNarration</code>. A resolver returns empty for an id it does not know, so a missing string is a quiet gap rather than a crash in a child’s screen; <code>kids_zone_strings_test.dart</code> is what stops that gap ever shipping, asserting every id in the catalogue resolves.</div>
+      </div>
+    </div>
+
+    <div class="finding f-minor f-done">
+      <div class="fid-row"><span class="fid">N6</span><span class="tag tag-fixed">Fixed</span></div>
+      <div>
+        <h4>Eight <code>use_build_context_synchronously</code> sites, one with a real path to it</h4>
+        <p class="where">level_complete_screen.dart:94 &middot; and 7 others</p>
+        <p>
+          Most are guarded well enough in practice. The exception is the notification opt-in:
+          <code>context.read&lt;LocalStore&gt;()</code> runs after an OS permission dialog and a
+          <code>setOptIn</code> write, with no <code>mounted</code> check, and throws on a
+          deactivated element if the screen goes away in between.
+        </p>
+        <div class="shipped"><b>Shipped 10 Sep 2026</b>All eight fixed, not only the one with a live crash path. Every case was the same shape &mdash; a <code>context</code> lookup <em>after</em> an await, whether that await was an OS permission dialog, an OAuth round trip, a pushed route or a confirm dialog &mdash; so each now resolves what it needs before the await rather than reaching back into a tree that may have moved on. This alone took <code>flutter analyze</code> from 12 issues to 3, and N7&ndash;N8 took the rest &mdash; which is worth more than tidiness: eight standing warnings everyone has learned to scroll past is how a real one gets missed.</div>
+      </div>
+    </div>
+
+    <div class="finding f-minor f-done">
+      <div class="fid-row"><span class="fid">N7</span><span class="tag tag-fixed">Fixed</span></div>
+      <div>
+        <h4>Store-metadata and manifest gaps</h4>
+        <p class="where">AndroidManifest.xml:4 &middot; ios/Runner/Info.plist</p>
+        <p>
+          <code>android:label</code> is the lowercase <code>"anointed"</code>, so the launcher shows
+          an unbranded name (iOS <code>CFBundleDisplayName</code> is correct). There is no
+          <code>android:allowBackup="false"</code>, so the cached child profile and Kids Zone
+          progress go to Google auto-backup. <code>Info.plist</code> is missing
+          <code>ITSAppUsesNonExemptEncryption</code>, which prompts on every upload.
+        </p>
+        <div class="shipped"><b>Shipped 10 Sep 2026</b>The launcher name is now <code>@string/app_name</code> &mdash; a resource rather than a literal, so a <code>values-xx/strings.xml</code> can localise it the way the rest of the copy now is. Confirmed in the built APK: <code>application-label: ‘Anointed’</code>. <code>android:allowBackup="false"</code> is the bigger half, and it is a compliance call rather than a technical one: Auto Backup would have copied the cached child profile into the account holder’s Drive, on a product whose whole posture is built around not moving a child’s data anywhere unconsented &mdash; and would have copied the encrypted preferences behind <code>flutter_secure_storage</code>, whose keys do not survive a restore onto a different device. The cost is that Kids Zone progress does not follow a device transfer, which was already true of a reinstall. iOS’s <code>ITSAppUsesNonExemptEncryption</code> went in with C3.</div>
+      </div>
+    </div>
+
+    <div class="finding f-minor f-done">
+      <div class="fid-row"><span class="fid">N8</span><span class="tag tag-fixed">Fixed</span></div>
+      <div>
+        <h4>Smaller items</h4>
+        <p class="where">assorted</p>
+        <p>
+          <strong>N8a</strong> &mdash; unused import of <code>state_views.dart</code> in
+          <code>sign_in_screen.dart:16</code>, the only analyzer warning.
+          <strong>N8b</strong> &mdash; <code>onPopInvoked</code> is deprecated in favour of
+          <code>onPopInvokedWithResult</code> (<code>gameplay_screen.dart:439</code>).
+          <strong>N8c</strong> &mdash; the three <code>popUntil</code> predicates in
+          <code>kids_zone_complete_screen.dart</code> have no <code>route.isFirst</code> fallback;
+          they match today because there is exactly one push path, and would empty the navigator if
+          a second were ever added.
+          <strong>N8d</strong> &mdash; <code>kids_zone_game_catalog.dart</code> defines a
+          <code>heroes_1</code> entry no adventure references.
+          <strong>N8e</strong> &mdash; <code>implementation-status.md</code> and
+          <code>kids.md</code> both still say "25 tests"; the suite is at 156.
+        </p>
+        <div class="shipped"><b>Shipped 10 Sep 2026</b><strong>a</strong> the unused import is gone &mdash; it was the last analyzer <em>warning</em>. <strong>b</strong> <code>onPopInvoked</code> &rarr; <code>onPopInvokedWithResult</code>. <strong>c</strong> all three <code>popUntil</code> predicates now fall back to <code>route.isFirst</code>: a predicate that never matches pops <em>every</em> route and leaves a black screen, and these matched only because there happens to be exactly one push path into the zone. <strong>d</strong> the orphaned <code>heroes_1</code> catalogue entry is removed &mdash; unreachable config reads as a feature to whoever finds it next. <strong>e</strong> the stale "25 tests" line in the docs now says 275.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Layout evidence <span class="count">21 broken &rarr; 0</span></h2>
+    <p class="matrix-note prose">
+      Every Kids Zone stop rendered at the sizes the app permits, measured by pumping each game in
+      isolation and reading the render-time exception. Figures are the overflow in logical pixels
+      <strong>as found</strong>; the last column is the state after the fix. The 2.4 column is not
+      shown here because it was added <em>with</em> the fix &mdash; it is now part of the suite, and
+      it found five more sites that the original four-frame sweep never reached.
+    </p>
+
+    <div class="scroller">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th class="stop">Stop</th>
+            <th>360&times;720<br>portrait</th>
+            <th>720&times;360<br>landscape</th>
+            <th>360&times;720<br>text&nbsp;1.6&times;</th>
+            <th>800&times;1280<br>tablet</th>
+            <th>After</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th class="stop">creation_intro</th><td class="pass">&mdash;</td><td class="pass">&mdash;</td><td class="was">153</td><td class="pass">&mdash;</td><td class="now">clear</td></tr>
+          <tr><th class="stop">garden_1</th><td class="pass">&mdash;</td><td class="pass">&mdash;</td><td class="pass">&mdash;</td><td class="pass">&mdash;</td><td class="now">clear</td></tr>
+          <tr><th class="stop">garden_2</th><td class="pass">&mdash;</td><td class="was">52</td><td class="was">61</td><td class="pass">&mdash;</td><td class="now">clear</td></tr>
+          <tr><th class="stop">garden_3</th><td class="pass">&mdash;</td><td class="was">91</td><td class="was">80</td><td class="pass">&mdash;</td><td class="now">clear</td></tr>
+          <tr><th class="stop">siddim_intro</th><td class="was">12</td><td class="pass">&mdash;</td><td class="was">281</td><td class="pass">&mdash;</td><td class="now">clear</td></tr>
+          <tr><th class="stop">siddim_1</th><td class="pass">&mdash;</td><td class="was">130</td><td class="was">337</td><td class="pass">&mdash;</td><td class="now">clear</td></tr>
+          <tr><th class="stop">siddim_2</th><td class="pass">&mdash;</td><td class="was">89</td><td class="was">287</td><td class="pass">&mdash;</td><td class="now">clear</td></tr>
+          <tr><th class="stop">siddim_3</th><td class="pass">&mdash;</td><td class="was">130</td><td class="was">387</td><td class="pass">&mdash;</td><td class="now">clear</td></tr>
+          <tr><th class="stop">ark_intro</th><td class="was">12</td><td class="pass">&mdash;</td><td class="was">217</td><td class="pass">&mdash;</td><td class="now">clear</td></tr>
+          <tr><th class="stop">ark_1</th><td class="pass">&mdash;</td><td class="pass">&mdash;</td><td class="was">74 + 17&rarr;</td><td class="pass">&mdash;</td><td class="now">clear</td></tr>
+          <tr><th class="stop">ark_2</th><td class="pass">&mdash;</td><td class="pass">&mdash;</td><td class="pass">&mdash;</td><td class="pass">&mdash;</td><td class="now">clear</td></tr>
+          <tr><th class="stop">ark_3</th><td class="pass">&mdash;</td><td class="pass">&mdash;</td><td class="was">63&rarr; + 29</td><td class="pass">&mdash;</td><td class="now">clear</td></tr>
+          <tr><th class="stop">moses_intro</th><td class="was">3.1</td><td class="pass">&mdash;</td><td class="was">203</td><td class="pass">&mdash;</td><td class="now">clear</td></tr>
+          <tr><th class="stop">moses_1</th><td class="pass">&mdash;</td><td class="pass">&mdash;</td><td class="pass">&mdash;</td><td class="pass">&mdash;</td><td class="now">clear</td></tr>
+          <tr><th class="stop">moses_2</th><td class="pass">&mdash;</td><td class="was">46</td><td class="pass">&mdash;</td><td class="pass">&mdash;</td><td class="now">clear</td></tr>
+          <tr><th class="stop">moses_3</th><td class="pass">&mdash;</td><td class="pass">&mdash;</td><td class="pass">&mdash;</td><td class="pass">&mdash;</td><td class="now">clear</td></tr>
+          <tr><th class="stop">heroes_2</th><td class="pass">&mdash;</td><td class="pass">&mdash;</td><td class="pass">&mdash;</td><td class="pass">&mdash;</td><td class="now">clear</td></tr>
+          <tr><th class="stop">kings_1</th><td class="was">42</td><td class="pass">&mdash;</td><td class="was">509</td><td class="pass">&mdash;</td><td class="now">clear</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="legend">
+      <span><i class="swatch" style="background: var(--crit-bg); border: 1px solid var(--crit);"></i> overflow as found, in logical px (bottom unless <span class="mono">&rarr;</span> marks the right edge)</span>
+      <span><i class="swatch" style="background: var(--ok-bg); border: 1px solid var(--ok);"></i> clear at all six frames now in the suite</span>
+    </div>
+
+    <p class="matrix-note prose" style="margin-top: 16px;">
+      <strong>garden_1</strong> (Listen &amp; Answer) could not be measured at first: its opening
+      narration holds a timer the test binding will not let a test end on, which reads as a failure
+      and hides whatever the layout is doing. Answering the TTS channel in the harness settled it,
+      and the stop turned out to be clean at every size &mdash; the original blank row was the
+      probe's limitation, not a defect.
+    </p>
+
+    <p class="matrix-note prose">
+      The suite that replaced the sweep is <code>test/kids_zone_layout_test.dart</code>: 108 cases,
+      each naming its own culprit widget and file, because "something overflowed" is not enough to
+      act on. It was checked against a deliberately impossible frame before being trusted &mdash; a
+      test that cannot fail is worse than no test.
+    </p>
+  </section>
+
+  <section>
+    <h2>Production readiness <span class="count">one gate left, and it is not code</span></h2>
+    <p class="lede prose">
+      The engineering underneath this was always better than the finding count suggested. Ranked
+      play is properly server-authoritative and never trusts the client with a score; the offline
+      paths are real rather than aspirational; the ad gate is two independent barriers, not a flag.
+      What was missing was the last mile &mdash; lifecycle handling, layout under conditions nobody
+      tested, and release configuration. All three are now closed, and the build enforces the third
+      itself rather than relying on anyone remembering it.
+    </p>
+
+    <div class="gates">
+      <div class="gate">
+        <span class="mark yes">&check;</span>
+        <div class="g-body">
+          <div class="g-title">Correctness under test</div>
+          <div class="g-note">275 tests pass, up from 156, and <code>flutter analyze</code> reports no issues at all where it began with 12. Coverage is deep on Kids Zone mechanics and layout, and still thin on the ranked, IAP and consent flows &mdash; which is where the next tests are worth writing.</div>
+        </div>
+        <div class="g-ref">verified</div>
+      </div>
+      <div class="gate">
+        <span class="mark yes">&check;</span>
+        <div class="g-body">
+          <div class="g-title">Layout robustness</div>
+          <div class="g-note">Clean at all six frames including the app's own 2.4 text ceiling, and pinned by a suite that names its culprits. At 2.4 the games are cramped rather than roomy &mdash; the honest trade against clamping type down in a children's app.</div>
+        </div>
+        <div class="g-ref">J1</div>
+      </div>
+      <div class="gate">
+        <span class="mark yes">&check;</span>
+        <div class="g-body">
+          <div class="g-title">App lifecycle</div>
+          <div class="g-note">Audio, narration and the leaderboard poll all stop when the app goes away, and resume only what they put down.</div>
+        </div>
+        <div class="g-ref">C5, J4</div>
+      </div>
+      <div class="gate">
+        <span class="mark yes">&check;</span>
+        <div class="g-body">
+          <div class="g-title">Offline behaviour</div>
+          <div class="g-note">Practice, caching and deferred score sync were already right; with fonts bundled, a first launch with no connection now keeps its own typography instead of falling back to Roboto.</div>
+        </div>
+        <div class="g-ref">J2</div>
+      </div>
+      <div class="gate">
+        <span class="mark yes">&check;</span>
+        <div class="g-body">
+          <div class="g-title">Privacy &amp; child-safety posture</div>
+          <div class="g-note">The unconsented font fetch is gone, Kids Zone data leaves with the account, and Android Auto Backup no longer copies the cached child profile into the account holder's Drive. The legal items below remain unsigned &mdash; that is the whole of what is left here.</div>
+        </div>
+        <div class="g-ref">J2, J5, N7</div>
+      </div>
+      <div class="gate">
+        <span class="mark part">&sim;</span>
+        <div class="g-body">
+          <div class="g-title">Accessibility</div>
+          <div class="g-note">The intent was always strong &mdash; 52 semantics annotations in Kids Zone, position announced on every question transition, OS and in-app text scale composed rather than stacked. It now survives the scale it composes to.</div>
+        </div>
+        <div class="g-ref">J1</div>
+      </div>
+      <div class="gate">
+        <span class="mark no">&times;</span>
+        <div class="g-body">
+          <div class="g-title">Release configuration</div>
+          <div class="g-note">Now self-enforcing on Android: a release that is unsigned, or still carrying the sample ad id, or never pointed at a backend, fails to build or refuses to start. The real keystore and ad ids are account secrets and still have to be provisioned &mdash; but they can no longer be forgotten silently. iOS has no build-time hook, so it has a written checklist.</div>
+        </div>
+        <div class="g-ref">C1&ndash;C3</div>
+      </div>
+      <div class="gate">
+        <span class="mark part">&sim;</span>
+        <div class="g-body">
+          <div class="g-title">Toolchain</div>
+          <div class="g-note"><code>targetSdk</code> 36 and 16&nbsp;KB page support both verified against a real build, not assumed. Flutter 3.24.5 is old enough to want upgrading on maintenance grounds, and targeting 36 on it brings Android 15 edge-to-edge behaviour that needs a device check &mdash; but neither blocks submission.</div>
+        </div>
+        <div class="g-ref">C4</div>
+      </div>
+      <div class="gate">
+        <span class="mark no">&times;</span>
+        <div class="g-body">
+          <div class="g-title">Content &amp; legal</div>
+          <div class="g-note">Carried forward from the project's own tracker, not re-verified here: ~2,000 launch questions unauthored, Privacy Policy and ToS awaiting counsel, AdMob COPPA checklist unsigned.</div>
+        </div>
+        <div class="g-ref">OQ-11, LB-1/2, C-11</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What is left</h2>
+    <p class="lede prose">
+      Nothing here blocks a submission. The release configuration is enforced by the build itself,
+      so what used to be "remember to do this" is "provision the credentials" &mdash; the build will
+      not let you forget. Of the findings, only the audio re-encode is left, and it is waiting on a
+      tool rather than a decision.
+    </p>
+
+    <ol class="prio">
+      <li>
+        <div class="a-title">Provision the credentials the build is now asking for</div>
+        <span class="pill p-part">High</span>
+        <div class="a-note">Create the upload keystore and fill <code>android/key.properties</code> from the committed example, and pass the real AdMob id with <code>-PadmobAppId</code>. Neither can be done for you &mdash; they are account secrets &mdash; but the build now refuses to produce a release without them. Then work the iOS checklist, which is where the same values live unguarded.</div>
+        <div class="a-refs">C2, C3 &middot; android/key.properties.example, docs/ios_release_checklist.md</div>
+      </li>
+      <li>
+        <div class="a-title">Check Android 15 edge-to-edge on a device</div>
+        <span class="pill p-part">High</span>
+        <div class="a-note">Targeting SDK 36 means Android 15+ draws the app behind the system bars whether it asks to or not, and this engine is from November 2024. Worth an hour on a real Android 15 handset looking for content under the status and gesture bars &mdash; particularly the Kids Zone games, which already manage system UI themselves.</div>
+        <div class="a-refs">C4 &middot; river_rescue_game.dart, sea_crossing_game.dart</div>
+      </li>
+      <li>
+        <div class="a-title">Schedule the Flutter upgrade as maintenance</div>
+        <span class="pill p-stub">Medium</span>
+        <div class="a-note">Not a blocker &mdash; that was this report's error, corrected above. But 3.24.5 is a November 2024 toolchain, and the gap only gets more expensive to close. Worth a window while nothing depends on it.</div>
+        <div class="a-refs">C4</div>
+      </li>
+      <li>
+        <div class="a-title">Run the fixed build on a device</div>
+        <span class="pill p-part">High</span>
+        <div class="a-note">Nothing in this pass was installed on hardware. The lifecycle fix in particular crosses two plugins and has no automated test: background mid-level, background mid-narration, and lock the screen from the ranked read-aloud button.</div>
+        <div class="a-refs">C5 &middot; scripts/deploy-phone-usb.bat</div>
+      </li>
+      <li>
+      <li>
+        <div class="a-title">Gate or lock the two placeholder adventures</div>
+        <span class="pill p-stub">Medium</span>
+        <div class="a-note">Heroes Path and Wise Kings read as playable content and deliver a generic mini-game. A locked "Coming soon" tile sets the expectation the subtitle already states.</div>
+        <div class="a-refs">Modes &middot; kids_zone_adventures.dart</div>
+      </li>
+      <li>
+        <div class="a-title">Run the audio re-encode</div>
+        <span class="pill p-none">Low</span>
+        <div class="a-note">One command on any machine with ffmpeg, and about 14&nbsp;MB comes off the bundle: <code>python scripts/encode_kids_zone_audio.py &lt;ffmpeg&gt;</code>. Then switch the three asset paths and listen to one loop before deleting the WAVs &mdash; the loop point is the only thing that can go wrong.</div>
+        <div class="a-refs">N2 &middot; scripts/encode_kids_zone_audio.py</div>
+      </li>
+    </ol>
+  </section>
+
+  <div class="scope">
+    <h3>Scope of this pass</h3>
+    <ul>
+      <li><strong>Audited:</strong> <code>flutter analyze</code> and the full <code>flutter test</code> suite on Flutter 3.24.5, plus a purpose-built render sweep of all 18 Kids Zone stops at four device frames.</li>
+      <li><strong>Then fixed:</strong> all five criticals, all seven majors, and every minor but the audio re-encode, each re-verified with the same commands. The sweep became <code>test/kids_zone_layout_test.dart</code> and grew to six frames; <code>test/kids_zone_progress_test.dart</code> covers the persistence changes and <code>test/kids_zone_strings_test.dart</code> keeps the catalogue and the ARB in step. 275 tests pass, and static analysis is clean where it began with 12 issues.</li>
+      <li><strong>Read:</strong> the mobile client's routing, state, services, gameplay, practice, leaderboard, Kids Zone and platform configuration.</li>
+      <li><strong>Not run:</strong> no build was installed on a device or emulator, before or after, so frame timings, real audio behaviour, store-billing flows and live network conditions remain unverified &mdash; including the lifecycle fix, which crosses two plugins and has no automated test. The backend suite could not run: <code>pytest</code> is not installed in <code>backend/.venv</code>.</li>
+      <li><strong>Carried forward, not re-verified:</strong> the legal, content and AdMob-account items in the project's own <code>implementation-status.md</code>.</li>
+      <li>Formatting was left alone: the repo is not <code>dart format</code>-clean, so running it would have churned ~900 unrelated lines. Only the blocks whose nesting actually changed were re-indented.</li>
+    </ul>
+  </div>
+
+</div>

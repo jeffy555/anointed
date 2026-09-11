@@ -1,0 +1,32 @@
+{# Terminal state for the M-06F web flow: approved, declined, or a bad/expired link. #}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{{ heading }} — Anointed</title>
+  <link rel="stylesheet" href="/static/consent.css">
+</head>
+<body>
+  <main class="card center">
+    <div class="result-icon" aria-hidden="true">{{ icon }}</div>
+    <h1>{{ heading }}</h1>
+    <div class="banner {{ banner_class }}">{{ message }}</div>
+
+    {% if show_return_hint %}
+      <p class="meta">
+        You can close this page now. {{ child_name }} can return to the Anointed app and
+        continue — the app checks for your permission automatically.
+      </p>
+    {% endif %}
+
+    {% if support_email %}
+      <p class="meta">
+        Questions? Email <a href="mailto:{{ support_email }}">{{ support_email }}</a>.
+      </p>
+    {% endif %}
+  </main>
+  <footer>Anointed</footer>
+</body>
+</html>

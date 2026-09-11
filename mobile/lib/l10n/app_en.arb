@@ -1,0 +1,1031 @@
+{
+  "@@locale": "en",
+
+  "appName": "Anointed",
+  "appTagline": "Discover the people of the Bible",
+
+  "actionContinue": "Continue",
+  "actionRetry": "Try again",
+  "actionCancel": "Cancel",
+  "actionClose": "Close",
+  "actionBack": "Back",
+  "actionNext": "Next",
+  "actionDone": "Done",
+  "actionSave": "Save",
+  "actionOk": "OK",
+  "actionSend": "Send",
+  "actionBackToMap": "Back to map",
+  "actionContactSupport": "Contact support",
+  "actionUpdateNow": "Update Now",
+  "actionSignIn": "Sign in",
+  "actionSignOut": "Sign out",
+
+  "loadingLabel": "Loading…",
+  "errorGenericTitle": "Something went wrong",
+  "errorGenericBody": "Please try again in a moment.",
+  "errorOfflineTitle": "No internet connection",
+  "errorOfflineBody": "Connect to the internet and try again.",
+  "errorSessionExpired": "Please sign in again to continue.",
+  "errorLinkFailed": "Couldn't open {url} on this device.",
+  "@errorLinkFailed": {
+    "placeholders": { "url": { "type": "String" } }
+  },
+  "offlineBadge": "Offline",
+
+  "splashCheckingUpdates": "Getting things ready…",
+  "splashConnectionError": "Can't connect to check for updates.",
+
+  "forceUpgradeTitle": "Update Required",
+  "forceUpgradeBody": "A new version of Anointed is available. Please update to continue playing.",
+  "forceUpgradeReleaseNotesLabel": "What's new",
+  "forceUpgradeStoreUnavailable": "Couldn't open the store. Please update Anointed from your app store.",
+
+  "welcomeHeadline": "Learn the people of the Bible",
+  "welcomeSubhead": "100 levels of Bible character challenges.",
+  "welcomeContinueWithGoogle": "Continue with Google",
+  "welcomeContinueWithApple": "Continue with Apple",
+  "welcomeContinueWithPhone": "Continue with phone number",
+  "welcomeSaveProgressNote": "Save your progress on any device",
+  "welcomeOrDivider": "or",
+  "welcomeAlreadyHaveAccount": "Already have an account?",
+  "welcomeSignInLink": "Sign in",
+  "welcomeOauthFailed": "Couldn't sign in with {provider}. Try again or use phone number.",
+  "@welcomeOauthFailed": {
+    "placeholders": { "provider": { "type": "String" } }
+  },
+  "providerGoogle": "Google",
+  "providerApple": "Apple",
+  "providerPhone": "phone number",
+
+  "signInTitle": "Welcome back",
+  "signInSubhead": "Sign in to pick up where you left off.",
+  "signInWithPhoneTitle": "Sign in with your phone number",
+  "signInAccountNotFound": "We couldn't find an account with that mobile number and name. Double-check both fields match what you used at sign-up.",
+  "signInCreateAccountLink": "Create a new account",
+  "signInNeedHelp": "Contact support for account recovery",
+  "signInPhoneRecoveryHint": "Enter the same mobile number and display name you used when you created your account. Spelling must match exactly.",
+  "signInRecoveryTitle": "Getting your progress back",
+  "signInRecoveryBody": "If you originally signed up with Google or Apple, use that button above — your progress is tied to that account.\n\nFor phone accounts, both the number and name must match exactly. On a new device, enter the same details you used before.\n\nStill stuck? Contact support with your mobile number and the name on the account.",
+  "signInRecoveryPrevent": "Tip: write down the name you chose at sign-up. Phone accounts do not use SMS codes — your number plus that exact name is how we find you.",
+
+  "phoneSignUpTitle": "Create your account",
+  "phoneSignUpSubhead": "No verification code needed.",
+  "fieldMobileLabel": "Mobile number",
+  "fieldMobileHint": "Numbers only",
+  "fieldNameLabel": "Your name",
+  "fieldAgeLabel": "Age",
+  "fieldMobileInvalid": "Enter a valid mobile number.",
+  "fieldNameRequired": "Enter a name.",
+  "fieldAgeInvalid": "Enter an age between 4 and 120.",
+  "phoneSignUpAccountExists": "An account already exists with that number and name. Try signing in instead.",
+  "phoneSignUpCreateAction": "Create account",
+
+  "profileCompletionTitle": "Tell us about you",
+  "profileCompletionSubhead": "We ask for age so we can keep younger players safe.",
+
+  "parentGateTitle": "Ask a parent or guardian to continue",
+  "parentGateBody": "Because this player is under 13, a parent or guardian needs to give permission before the account can be used. A grown-up should take over from here.",
+  "parentGateNoSkipNote": "This step can't be skipped.",
+  "parentGatePathATitle": "Parent signs in (recommended)",
+  "parentGatePathABody": "A parent signs in with their own Google or Apple account and gives permission.",
+  "parentGatePathBTitle": "Parent email confirmation",
+  "parentGatePathBBody": "We email a parent a secure link they open on their own device.",
+  "parentGateStatusExpired": "The previous permission link expired. Please start again.",
+  "parentGateStatusDenied": "A parent or guardian declined permission for this account.",
+
+  "parentOauthTitle": "Parent, please sign in",
+  "parentOauthBody": "Use your own Google or Apple account — not your child's. You'll be asked to choose an account.",
+  "parentOauthWithGoogle": "Continue as parent with Google",
+  "parentOauthWithApple": "Continue as parent with Apple",
+  "parentOauthSameAccountError": "Please sign in with a parent or guardian's own account, not the child's.",
+
+  "attestationTitle": "Parent permission",
+  "attestationGuardianNameLabel": "Parent or guardian full name",
+  "attestationGuardianNameRequired": "Enter the parent or guardian's full name.",
+  "attestationRelationshipLabel": "Relationship to the child",
+  "relationshipParent": "Parent",
+  "relationshipGuardian": "Legal guardian",
+  "relationshipOther": "Other legal guardian",
+  "attestationIsGuardianCheckbox": "I am the parent or legal guardian of this child.",
+  "attestationConsentCheckbox": "I consent to the collection and use of my child's information as described in the Privacy Policy.",
+  "attestationPrivacyLink": "Read the Privacy Policy",
+  "attestationIncomplete": "Both permission checkboxes must be ticked to continue.",
+
+  "childProfileTitle": "Set up your child's profile",
+  "childProfileNameLabel": "Child's display name",
+  "childProfileMobileLabel": "Child's mobile number (optional)",
+  "childProfileAgeReadOnly": "Age: {age}",
+  "@childProfileAgeReadOnly": {
+    "placeholders": { "age": { "type": "int" } }
+  },
+  "childProfileSubmit": "Give permission and continue",
+
+  "parentEmailTitle": "Parent's email address",
+  "parentEmailBody": "Enter a parent or guardian's email address — not the child's. We'll send a secure link that expires in 72 hours.",
+  "parentEmailLabel": "Parent's email address",
+  "parentEmailInvalid": "Enter a valid email address.",
+  "parentEmailSend": "Send permission email",
+
+  "awaitingEmailTitle": "Waiting for a parent",
+  "awaitingEmailBody": "We sent a link to {email}. A parent must tap the link to continue.",
+  "@awaitingEmailBody": {
+    "placeholders": { "email": { "type": "String" } }
+  },
+  "awaitingEmailChecking": "Checking for permission…",
+  "awaitingEmailResend": "Resend email",
+  "awaitingEmailResendIn": "Resend available in {seconds}s",
+  "@awaitingEmailResendIn": {
+    "placeholders": { "seconds": { "type": "int" } }
+  },
+  "awaitingEmailResendSent": "Permission email sent again.",
+  "awaitingEmailSwitchToOauth": "Use Google or Apple instead",
+  "awaitingEmailExpiresAt": "This link expires {date}.",
+  "@awaitingEmailExpiresAt": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "awaitingEmailResendLimit": "We've sent the maximum number of permission emails for today.",
+
+  "childNoticeTitle": "What we collect",
+  "childNoticeIntro": "Here's what Anointed keeps, in plain language.",
+  "childNoticeItemName": "A display name, so we can greet the player and show them on the leaderboard as a first name and last initial.",
+  "childNoticeItemAge": "Age, so we know which rules to follow for younger players.",
+  "childNoticeItemProgress": "Levels completed and scores, so progress is saved.",
+  "childNoticeItemNoAds": "Players under 13 never see ads.",
+  "childNoticeItemDelete": "A parent can delete everything at any time from the Profile screen.",
+  "childNoticeAcknowledge": "I understand",
+
+  "privacyTitle": "Privacy and Terms",
+  "privacyBody": "Tap Continue to accept the Privacy Policy and Terms of Service.",
+  "privacyPolicyLink": "Privacy Policy",
+  "termsLink": "Terms of Service",
+  "privacyLinkUnavailable": "Couldn't open that page right now.",
+
+  "navMap": "Map",
+  "navLeaderboard": "Leaderboard",
+  "navPractice": "Practice",
+  "navProfile": "Profile",
+
+  "levelMapTitle": "Level map",
+  "levelMapProgress": "Level {current} of {total}",
+  "@levelMapProgress": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "levelMapSyncFailed": "Your progress couldn't sync. Playing with last saved data.",
+  "levelNodeLabel": "Level {number}",
+  "@levelNodeLabel": {
+    "placeholders": { "number": { "type": "int" } }
+  },
+  "levelNodeStateLocked": "locked",
+  "levelNodeStateUnlocked": "unlocked",
+  "levelNodeStateCompleted": "completed",
+  "levelNodeSemantics": "Level {number} — {state}",
+  "@levelNodeSemantics": {
+    "placeholders": {
+      "number": { "type": "int" },
+      "state": { "type": "String" }
+    }
+  },
+  "levelMapUnlockBanner": "Unlock levels {from}–{to}",
+  "@levelMapUnlockBanner": {
+    "placeholders": {
+      "from": { "type": "int" },
+      "to": { "type": "int" }
+    }
+  },
+  "levelMapConsentPending": "A parent or guardian needs to finish giving permission before you can play.",
+  "levelMapConsentPendingAction": "Finish parent permission",
+
+  "levelDetailTitle": "Level {number}",
+  "@levelDetailTitle": {
+    "placeholders": { "number": { "type": "int" } }
+  },
+  "levelDetailDifficulty": "Difficulty",
+  "levelDetailTimer": "{seconds}s per question",
+  "@levelDetailTimer": {
+    "placeholders": { "seconds": { "type": "int" } }
+  },
+  "levelDetailQuestions": "{count} questions",
+  "@levelDetailQuestions": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "levelDetailQuestionMix": "Question types",
+  "levelDetailBestScore": "Best score: {score}",
+  "@levelDetailBestScore": {
+    "placeholders": { "score": { "type": "int" } }
+  },
+  "levelDetailPlay": "Play",
+  "levelDetailNotPlayable": "This level is still being prepared. Try another one.",
+  "levelDetailLockedByProgress": "Finish the level before this one first.",
+  "difficultyEasy": "Easy",
+  "difficultyMedium": "Medium",
+  "difficultyHard": "Hard",
+  "difficultyExpert": "Expert",
+  "variantTextQa": "Question",
+  "variantVerseClue": "Verse clue",
+  "variantImageClue": "Picture clue",
+
+  "gameplayProgress": "Question {index} of {total}",
+  "@gameplayProgress": {
+    "placeholders": {
+      "index": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "gameplayVersePrompt": "Which character is this verse about?",
+  "gameplayImagePrompt": "Who is this Bible character?",
+  "gameplayReadAloud": "Read question aloud",
+  "gameplayReadAloudStop": "Stop reading",
+  "gameplayReadAloudSemantics": "Read the question aloud",
+  "gameplayTimerSemantics": "{seconds} seconds remaining",
+  "@gameplayTimerSemantics": {
+    "placeholders": { "seconds": { "type": "int" } }
+  },
+  "gameplayCorrect": "Correct",
+  "gameplayWrong": "Not this time",
+  "gameplayLoadFailed": "Something went wrong loading this level.",
+  "gameplayConnectionLost": "Connection lost — your score won't be submitted.",
+  "gameplayTooFast": "Take a moment to read the question, then answer.",
+  "gameplayAnswerRejected": "That answer didn't register. Please answer again.",
+  "gameplayQuitTitle": "Leave this level?",
+  "gameplayQuitBody": "Your progress in this level will be lost.",
+  "gameplayQuitConfirm": "Leave level",
+  "gameplayPracticeBadge": "Practice mode",
+
+  "levelCompleteTitle": "Level complete!",
+  "levelCompleteScore": "Score: {score}",
+  "@levelCompleteScore": {
+    "placeholders": { "score": { "type": "int" } }
+  },
+  "levelCompleteAttempts": "Attempts: {count}",
+  "@levelCompleteAttempts": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "levelCompleteNextLevel": "Next level",
+  "levelCompleteScoreQueued": "Score saved — will sync when online.",
+  "levelCompleteNotifyTitle": "Want a reminder when it's time to play again?",
+  "levelCompleteNotifyBody": "We'll send one gentle nudge if you haven't played in a few days.",
+  "levelCompleteNotifyYes": "Yes, remind me",
+  "levelCompleteNotifyNo": "Not now",
+  "levelCompleteNotifyDenied": "Reminders are switched off for Anointed in your device settings. You can turn them on there.",
+
+  "levelFailTitle": "Great try!",
+  "levelFailBody": "Play again to find the answer!",
+  "levelFailAction": "Try again",
+  "timerExpiredTitle": "Time's up!",
+  "timerExpiredBody": "Give it another go — you'll be quicker this time.",
+
+  "adBreakTitle": "A quick word from our sponsor",
+  "adBreakSubtitle": "Your next level is on the way.",
+
+  "iapUnlockTitle": "Unlock levels {from}–{to}",
+  "@iapUnlockTitle": {
+    "placeholders": {
+      "from": { "type": "int" },
+      "to": { "type": "int" }
+    }
+  },
+  "iapUnlockHeadline": "Support your child's Bible learning",
+  "iapUnlockBody": "One payment unlocks every remaining level, forever. Levels 1–5 and Practice mode stay free.",
+  "iapUnlockBenefitLevels": "95 more levels of Bible character challenges",
+  "iapUnlockBenefitOneTime": "One-time payment — no subscription",
+  "iapUnlockBenefitPractice": "Practice mode always stays free",
+  "iapUnlockPriceLoading": "Checking price…",
+  "iapUnlockBuyAction": "Unlock for {price}",
+  "@iapUnlockBuyAction": {
+    "placeholders": { "price": { "type": "String" } }
+  },
+  "iapUnlockLater": "Maybe later",
+  "iapStoreUnavailable": "The store is unavailable right now.",
+  "iapAlreadyPurchasedRestoring": "You've already purchased this! Restoring your access…",
+  "purchaseSuccessTitle": "You're all set!",
+  "purchaseSuccessBody": "Levels {from}–{to} are unlocked. Happy playing!",
+  "@purchaseSuccessBody": {
+    "placeholders": {
+      "from": { "type": "int" },
+      "to": { "type": "int" }
+    }
+  },
+  "purchaseSuccessAction": "Continue playing",
+  "purchaseFailedTitle": "Purchase didn't go through",
+  "purchaseFailedBody": "You have not been charged. You can try again, or contact us and we'll help.",
+  "purchaseCancelledNotice": "Purchase cancelled. Levels 6–100 are still locked.",
+  "restorePurchaseTitle": "Restore purchase",
+  "restorePurchaseBody": "If you've already paid, we'll restore your access. Make sure you're signed in to the store account you paid with.",
+  "restorePurchaseAction": "Restore purchase",
+  "restorePurchaseSuccess": "Your purchase has been restored.",
+  "restorePurchaseNothing": "There's no previous purchase to restore on this store account.",
+  "restorePurchaseError": "Couldn't restore your purchase. Please try again later.",
+
+  "leaderboardTitle": "Leaderboard",
+  "leaderboardWindowAllTime": "All time",
+  "leaderboardWindowWeekly": "This week",
+  "leaderboardWindowDaily": "Today",
+  "leaderboardColumnRank": "Rank",
+  "leaderboardColumnPlayer": "Player",
+  "leaderboardColumnScore": "Score",
+  "leaderboardYourRank": "Your rank",
+  "leaderboardYourRankValue": "#{rank} · {score} points",
+  "@leaderboardYourRankValue": {
+    "placeholders": {
+      "rank": { "type": "int" },
+      "score": { "type": "int" }
+    }
+  },
+  "leaderboardYourRankNone": "Complete a level to join the board.",
+  "leaderboardEmpty": "Be the first! Complete a level to submit your score.",
+  "leaderboardOffline": "Leaderboard needs internet. Connect to see rankings.",
+  "leaderboardError": "Couldn't load leaderboard. Pull down to refresh.",
+  "leaderboardUpdatedAgo": "Updated {minutes} min ago",
+  "@leaderboardUpdatedAgo": {
+    "placeholders": { "minutes": { "type": "int" } }
+  },
+  "leaderboardUpdatedJustNow": "Updated just now",
+  "leaderboardLevelLabel": "Level {number}",
+  "@leaderboardLevelLabel": {
+    "placeholders": { "number": { "type": "int" } }
+  },
+
+  "practiceHubTitle": "Practice",
+  "practiceHubSubhead": "Levels 1–5 offline. No ads, no scores, no internet needed.",
+  "practiceLevelOfflineOnly": "Offline practice is available for levels 1–5 only.",
+  "practiceOfflineBadge": "Works offline",
+  "practiceQuestionsUpdated": "Questions updated {date}",
+  "@practiceQuestionsUpdated": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "practiceUpdating": "Updating practice questions…",
+  "practiceUpdateFailed": "Couldn't update practice questions. Using saved questions.",
+  "practiceNoPackOffline": "Practice questions need a one-time download. Connect to the internet, then open Practice again.",
+  "practiceNoPackRetry": "Retry when online",
+  "practicePackCorrupt": "Practice questions couldn't load. Try reinstalling the app or contact support.",
+  "practiceLevelNotReady": "This level has no practice questions yet.",
+  "practiceResultPassTitle": "Well done!",
+  "practiceResultPassBody": "You answered all {count} questions correctly.",
+  "@practiceResultPassBody": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "practiceResultFailTitle": "Good practice!",
+  "practiceResultFailBody": "You got {correct} of {total} before the level ended.",
+  "@practiceResultFailBody": {
+    "placeholders": {
+      "correct": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "practiceResultTryMain": "Play this level for real",
+  "practiceResultTryAgain": "Practice again",
+  "practiceResultBack": "Back to practice",
+
+  "profileTitle": "Profile",
+  "profileStatLevels": "Levels completed",
+  "profileStatHighest": "Highest level",
+  "profileStatScore": "Total score",
+  "profilePurchaseUnlocked": "Levels 6–100 unlocked",
+  "profilePurchaseLocked": "Levels 6–100 locked",
+  "profileMemberSince": "Playing since {date}",
+  "@profileMemberSince": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "profileAgeGroupKid": "Kids",
+  "profileAgeGroupYouth": "Youth",
+  "profileAgeGroupAdult": "Adult",
+  "profileAgeGroupElder": "Elder",
+  "profileSignedInWith": "Signed in with {provider}",
+  "@profileSignedInWith": {
+    "placeholders": { "provider": { "type": "String" } }
+  },
+  "profileLinkSettings": "Settings",
+  "profileLinkSupport": "Help & Support",
+  "profileLinkDelete": "Delete my account",
+  "profileRefreshFailed": "Couldn't refresh profile",
+  "profileUnlockAction": "Unlock all levels",
+
+  "settingsTitle": "Settings",
+  "settingsSectionDisplay": "Display",
+  "settingsLargeText": "Large text",
+  "settingsLargeTextSubtitle": "Bigger type across the whole app.",
+  "settingsThemeMode": "Appearance",
+  "settingsThemeSystem": "Match device",
+  "settingsThemeLight": "Light",
+  "settingsThemeDark": "Dark",
+  "settingsSectionReminders": "Reminders",
+  "settingsPlayReminders": "Play reminders",
+  "settingsPlayRemindersSubtitle": "One gentle nudge if you haven't played in a few days.",
+  "settingsRemindersBlocked": "Notifications are switched off for Anointed in your device settings.",
+  "settingsOpenDeviceSettings": "Open device settings",
+  "settingsSectionPurchases": "Purchases",
+  "settingsSectionAbout": "About",
+  "settingsSectionAccount": "Account",
+  "settingsAppVersion": "Anointed v{version} build {build}",
+  "@settingsAppVersion": {
+    "placeholders": {
+      "version": { "type": "String" },
+      "build": { "type": "String" }
+    }
+  },
+  "settingsSaveFailed": "Couldn't save that setting. Please try again.",
+
+  "signOutTitle": "Sign out?",
+  "signOutBody": "You'll need to sign in again to see your progress on this device.",
+
+  "deleteAccountTitle": "Delete your account?",
+  "deleteAccountBody": "Deleting your account will permanently remove all your progress, scores, and data. This cannot be undone.",
+  "deleteAccountChildNote": "Your child's data will be permanently removed from our servers immediately.",
+  "deleteAccountRemovedHeading": "What gets deleted",
+  "deleteAccountRetainedHeading": "What we keep, with no link to you",
+  "deleteAccountFirstAction": "Delete account",
+  "deleteAccountFinalTitle": "One last check",
+  "deleteAccountAcknowledge": "I understand this is permanent and cannot be undone.",
+  "deleteAccountConfirmAction": "Confirm deletion",
+  "deleteAccountDoneTitle": "Your account has been deleted.",
+  "deleteAccountDoneBody": "Thanks for playing Anointed. We're returning you to the start.",
+  "deleteAccountFailed": "Couldn't delete your account right now. Please try again or contact support.",
+  "deleteAccountStatLevels": "{count} levels completed will be removed",
+  "@deleteAccountStatLevels": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "deleteAccountPurchaseNote": "Your purchase cannot be transferred to a new account. Store refunds are handled by Apple or Google.",
+
+  "supportTitle": "Help & Support",
+  "supportFaqHeading": "Frequently asked questions",
+  "supportFaqEmpty": "No FAQ available right now.",
+  "supportContactHeading": "Contact us",
+  "supportCategoryLabel": "What's this about?",
+  "supportCategoryGeneral": "General question",
+  "supportCategoryAccount": "Account and sign-in",
+  "supportCategoryPurchase": "Purchases",
+  "supportCategoryGameplay": "Playing the game",
+  "supportCategoryPrivacy": "Privacy",
+  "supportMessageLabel": "Your message",
+  "supportMessageRequired": "Please write a little more so we can help.",
+  "supportReplyToLabel": "Email for our reply (optional)",
+  "supportSendAction": "Send message",
+  "supportSendSuccess": "Thanks — we've got your message and will reply by email.",
+  "supportSendFailed": "Couldn't send your message. Try again or email {email} directly.",
+  "@supportSendFailed": {
+    "placeholders": { "email": { "type": "String" } }
+  },
+  "supportEmailDirect": "Email us at {email}",
+  "@supportEmailDirect": {
+    "placeholders": { "email": { "type": "String" } }
+  },
+  "supportEmailUsAction": "Email us instead",
+  "supportContactSubhead": "Describe what happened and include any details that will help us (your sign-in method, level number, or purchase receipt). We reply by email, usually within one business day.",
+  "supportSignInRequired": "You need to be signed in to read the FAQ or send a message from the app. You can still email us directly.",
+  "supportEmailCopyHint": "No email app found. Write to us at {email}.",
+  "@supportEmailCopyHint": {
+    "placeholders": { "email": { "type": "String" } }
+  },
+  "supportVersionNote": "Include your app version when you contact us — it's shown below.",
+
+  "notificationChannelName": "Play reminders",
+  "notificationChannelDescription": "Gentle reminders to come back and play.",
+  "notification3dTitle": "Anointed",
+  "notification3dBody": "Level {level} is waiting! Come back to Anointed.",
+  "@notification3dBody": {
+    "placeholders": { "level": { "type": "int" } }
+  },
+  "notification7dTitle": "Anointed",
+  "notification7dBody": "We miss you! Pick up your Bible character quiz.",
+
+  "devSignInTitle": "Developer sign-in",
+  "devSignInBody": "Google and Apple sign-in are not configured in this build. Continue with a development account instead.",
+  "devSignInAction": "Continue as developer account",
+  "devSignInBadge": "Development build",
+
+  "playModeChooserHeading": "Choose your journey",
+  "playModeMainJourneyTitle": "Main Journey",
+  "playModeMainJourneySubtitle": "100 levels · leaderboard · ranked play",
+  "playModeKidsZoneTitle": "Kids Zone",
+  "playModeKidsZoneSubtitle": "Adventure games · stories · stars",
+
+  "kidsZoneHubTitle": "Kids Zone",
+  "kidsZoneHubSubhead": "Pick an adventure — animated stories, games, and stars!",
+  "kidsZoneBackToMain": "Back to Main Journey",
+  "kidsZoneAdventureStops": "{count, plural, =1{1 stop} other{{count} stops}}",
+  "@kidsZoneAdventureStops": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "kidsZoneStopComplete": "Done!",
+  "kidsZoneStopLocked": "Finish the stop before this one first",
+  "kidsZoneStopPlay": "Start adventure",
+  "kidsZoneStopReplay": "Play again",
+  "kidsZonePackNotReady": "Adventure questions aren't ready yet. Connect to the internet or try again.",
+  "kidsZoneWrongFriendly": "Good try! Tap another answer.",
+  "kidsZoneCompleteTitle": "Adventure complete!",
+  "kidsZoneCompleteStars": "You earned {stars} stars!",
+  "@kidsZoneCompleteStars": {
+    "placeholders": { "stars": { "type": "int" } }
+  },
+  "kidsZoneCompleteNext": "Next stop",
+  "kidsZoneCompleteExplore": "Explore more adventures",
+  "kidsZoneGameplayHint": "Take your time — wrong answers let you try again!",
+
+  "kidsZoneGameStory": "Story adventure",
+  "kidsZoneGameListen": "Listen & learn",
+  "kidsZoneGameIntro": "Introduction",
+  "kidsZoneGameConnect": "Connect creations",
+  "kidsZoneGameJumble": "Jumbled challenge",
+  "kidsZoneGameMatch": "Match game",
+  "kidsZoneGameTrail": "Story trail",
+  "kidsZoneGameExplorer": "Explorer hunt",
+  "kidsZoneGameArchery": "Archery quest",
+  "kidsZoneGameArkBuilder": "Ark builder",
+  "kidsZoneGameAnimalMatch": "Two by two",
+  "kidsZoneGameAnimalCare": "Animal care",
+  "kidsZoneGameFinish": "Finish adventure",
+  "kidsZoneGameMissing": "This adventure game isn't ready yet.",
+  "kidsZoneGameMatchProgress": "Pairs found: {found} of {total}",
+  "@kidsZoneGameMatchProgress": {
+    "placeholders": {
+      "found": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "kidsZoneGameTrailHint": "Drag the stones to put the story in order.",
+  "kidsZoneGameTrailWrong": "Not quite — try a different order!",
+  "kidsZoneGameTrailCheck": "Check my trail",
+  "kidsZoneGameShuffle": "Shuffle stones",
+  "kidsZoneGameExplorerProgress": "Found {found} of {total}",
+  "@kidsZoneGameExplorerProgress": {
+    "placeholders": {
+      "found": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+
+  "kidsZoneListenIntro": "Listen carefully to the whole story. Questions come after!",
+  "kidsZoneListenPart": "Part {current} of {total}",
+  "@kidsZoneListenPart": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "kidsZoneListenPlay": "Listen again",
+  "kidsZoneListenPlaying": "Listening…",
+  "kidsZoneListenNext": "Next part",
+  "kidsZoneListenReady": "I'm ready for questions",
+  "kidsZoneQuestionIntro": "Great listening! Now show what you heard.",
+  "kidsZoneListenWrong": "Think about the story — try another answer!",
+
+  "kidsZoneIntroSceneHint": "Listen to the Creation story. Watch the world come alive!",
+  "kidsZoneIntroBeginLevel1": "Start Level 1",
+  "kidsZoneLevel1Intro": "Listen to each question, then choose your answer.",
+  "kidsZoneListenNowListen": "Listen to the question…",
+  "kidsZoneListenChooseAnswer": "Now choose your answer",
+  "kidsZoneConnectHint": "Tap a day, then tap what God made that day. Careful — some things were not made in creation week!",
+  "kidsZoneConnectDistractor": "Some of those were not part of creation week. Look again!",
+  "kidsZoneConnectWrong": "Some connections aren't right — try again!",
+  "kidsZoneConnectCheck": "Check my connections",
+  "kidsZoneConnectReset": "Clear all lines",
+  "kidsZoneJumbleProgress": "Sentence {current} of {total}",
+  "@kidsZoneJumbleProgress": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "kidsZoneJumbleTapWords": "Tap the words in order to build the sentence",
+  "kidsZoneJumbleHint": "Try this word next: {word}",
+  "@kidsZoneJumbleHint": {
+    "placeholders": { "word": { "type": "String" } }
+  },
+  "kidsZoneJumbleCheck": "Check sentence",
+  "kidsZoneJumbleReset": "Start this sentence over",
+  "kidsZoneJumbleComplete": "You unscrambled Creation! Rainbow celebration!",
+
+  "kidsZoneSiddimIntroHint": "Hear how Abram bravely rescued Lot in the Valley of Siddim.",
+  "kidsZoneSiddimBeginLevel1": "Start the archery quest",
+  "kidsZoneSiddimAimHint": "Drag to aim · let go to shoot · keep soldiers out of the camp",
+  "kidsZoneSiddimRoundLabel": "Round {round} of {total}",
+  "@kidsZoneSiddimRoundLabel": {
+    "placeholders": {
+      "round": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "kidsZoneSiddimCourageLeft": "{count, plural, =1{1 courage heart left} other{{count} courage hearts left}}",
+  "@kidsZoneSiddimCourageLeft": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "kidsZoneSiddimRoundCleared": "Round cleared!",
+  "kidsZoneSiddimRoundStats": "{score} points · {accuracy}% accuracy",
+  "@kidsZoneSiddimRoundStats": {
+    "placeholders": {
+      "score": { "type": "int" },
+      "accuracy": { "type": "int" }
+    }
+  },
+  "kidsZoneSiddimVictoryTitle": "Abram wins the day!",
+  "kidsZoneSiddimVictoryBody": "King Chedorlaomer turns back and Lot comes home safe.",
+  "kidsZoneSiddimBreached": "The soldiers reached the camp",
+  "kidsZoneSiddimBreachedBody": "Abram never gave up — and neither should you. Try this round again!",
+  "kidsZoneSiddimTryRoundAgain": "Try this round again",
+  "kidsZoneSiddimNearMiss": "Almost!",
+  "kidsZoneSiddimAimHintAccessible": "Choose a lane to shoot along",
+  "kidsZoneSiddimStatTurnedBack": "Soldiers turned back",
+  "kidsZoneSiddimStatArrows": "Arrows on target",
+  "kidsZoneSiddimStatHearts": "Hearts left",
+  "kidsZoneSiddimStatPoints": "Points",
+  "kidsZoneSiddimGoalNoBreach": "Let nobody reach the camp",
+  "kidsZoneSiddimGoalAccuracy": "Hit with {percent}% of your arrows",
+  "@kidsZoneSiddimGoalAccuracy": {
+    "placeholders": { "percent": { "type": "int" } }
+  },
+  "kidsZoneSiddimLaneFarLeft": "far left",
+  "kidsZoneSiddimLaneLeft": "left",
+  "kidsZoneSiddimLaneAhead": "straight ahead",
+  "kidsZoneSiddimLaneRight": "right",
+  "kidsZoneSiddimLaneFarRight": "far right",
+  "kidsZoneSiddimFireLane": "Shoot {lane}",
+  "@kidsZoneSiddimFireLane": {
+    "placeholders": { "lane": { "type": "String" } }
+  },
+  "kidsZoneSiddimThreatNone": "The valley is clear",
+  "kidsZoneSiddimThreatAt": "Nearest soldier: {lane}",
+  "@kidsZoneSiddimThreatAt": {
+    "placeholders": { "lane": { "type": "String" } }
+  },
+
+  "kidsZoneArkIntroHint": "Hear how Noah trusted God, built the ark, and kept every animal safe.",
+  "kidsZoneArkBeginLevel1": "Start building the ark",
+  "kidsZoneArkStageLabel": "Stage {stage} of {total}",
+  "@kidsZoneArkStageLabel": {
+    "placeholders": {
+      "stage": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "kidsZoneArkPiecePlaced": "{piece} fitted",
+  "@kidsZoneArkPiecePlaced": {
+    "placeholders": { "piece": { "type": "String" } }
+  },
+  "kidsZoneArkTrayEmpty": "Every piece is in place!",
+  "kidsZoneArkStageDone": "Stage complete!",
+  "kidsZoneArkStageNext": "Noah kept working day after day. Let's keep going!",
+  "kidsZoneArkKeepBuilding": "Keep building",
+  "kidsZoneArkBuiltTitle": "The ark is finished!",
+  "kidsZoneArkBuiltBody": "Noah obeyed God and finished every plank. Well done!",
+
+  "kidsZoneArkMatchHint": "Flip two cards to find each animal and its mate. You have 5 hearts!",
+  "kidsZoneArkPairsFound": "Pairs: {found} of {total}",
+  "@kidsZoneArkPairsFound": {
+    "placeholders": {
+      "found": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "kidsZoneArkLivesLeft": "{count, plural, =1{1 heart left} other{{count} hearts left}}",
+  "@kidsZoneArkLivesLeft": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "kidsZoneArkPairFound": "{animal} pair found",
+  "@kidsZoneArkPairFound": {
+    "placeholders": { "animal": { "type": "String" } }
+  },
+  "kidsZoneArkMatchWonTitle": "Every animal is aboard!",
+  "kidsZoneArkMatchWonBody": "Two by two, just as God told Noah.",
+  "kidsZoneArkMatchLostTitle": "Out of hearts",
+  "kidsZoneArkMatchLostBody": "Noah never gave up. Shall we try once more?",
+  "kidsZoneArkTryAgain": "Try again",
+  "kidsZoneArkPracticeMode": "Practice mode: unlimited hearts",
+  "kidsZoneArkHeartsUnlimited": "Unlimited hearts",
+  "kidsZoneArkMercyReveal": "Here they are! Remember where they go.",
+  "kidsZoneArkPracticeStar": "Practice run — play with hearts to earn more stars.",
+
+  "kidsZoneArkRoundLabel": "Round {round} of {total}",
+  "@kidsZoneArkRoundLabel": {
+    "placeholders": {
+      "round": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "kidsZoneArkTasks": "Cared for {done} of {total}",
+  "@kidsZoneArkTasks": {
+    "placeholders": {
+      "done": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "kidsZoneArkHappiness": "Animals are {percent}% happy",
+  "@kidsZoneArkHappiness": {
+    "placeholders": { "percent": { "type": "int" } }
+  },
+  "kidsZoneArkToolFood": "Feed",
+  "kidsZoneArkToolWater": "Water",
+  "kidsZoneArkToolClean": "Clean",
+  "kidsZoneArkToolComfort": "Comfort",
+  "kidsZoneArkPickToolFirst": "Pick a tool first, then tap the animal.",
+  "kidsZoneArkCared": "{animal} is happy",
+  "@kidsZoneArkCared": {
+    "placeholders": { "animal": { "type": "String" } }
+  },
+  "kidsZoneArkRoundDone": "Round complete!",
+  "kidsZoneArkNextRound": "Next round",
+  "kidsZoneArkCareDoneTitle": "A safe voyage!",
+  "kidsZoneArkCareDoneBody": "You cared for every animal until the waters went down.",
+  "kidsZoneArkTutorialTitle": "How to help the animals",
+  "kidsZoneArkTutorialBody": "An animal shows a picture of what it needs. Pick the matching tool, then tap that animal.",
+  "kidsZoneArkTutorialStart": "I'm ready!",
+  "kidsZoneArkTutorialHelp": "How to play",
+  "kidsZoneGameRiverRescue": "River rescue",
+  "kidsZoneMosesIntroHint": "Listen to the story of baby Moses on the river.",
+  "kidsZoneMosesBeginLevel1": "Begin Level 1",
+  "kidsZoneGamePlagueSort": "Plagues of Egypt",
+  "kidsZoneGameSeaCrossing": "Crossing the sea",
+  "kidsZoneSeaPhaseLabel": "Part {phase} of {total}",
+  "@kidsZoneSeaPhaseLabel": {
+    "placeholders": { "phase": { "type": "int" }, "total": { "type": "int" } }
+  },
+  "kidsZoneSeaBeatsSemantics": "{hits} of {total} beats kept",
+  "@kidsZoneSeaBeatsSemantics": {
+    "placeholders": { "hits": { "type": "int" }, "total": { "type": "int" } }
+  },
+  "kidsZonePlagueRoundLabel": "Round {round} of {total}",
+  "@kidsZonePlagueRoundLabel": {
+    "placeholders": { "round": { "type": "int" }, "total": { "type": "int" } }
+  },
+  "kidsZonePlagueStep": "{step}",
+  "@kidsZonePlagueStep": {
+    "placeholders": { "step": { "type": "int" } }
+  },
+  "kidsZonePlagueResolveLabel": "Pharaoh's heart",
+  "kidsZonePlagueResolveBroken": "Pharaoh lets them go!",
+  "kidsZonePlagueResolveSemantics": "Pharaoh's heart: {cracks} of {total} cracks",
+  "@kidsZonePlagueResolveSemantics": {
+    "placeholders": { "cracks": { "type": "int" }, "total": { "type": "int" } }
+  },
+  "kidsZonePlagueCardSemantics": "{name}. Drag onto the right step.",
+  "@kidsZonePlagueCardSemantics": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "kidsZonePlagueHearSemantics": "Hear about {name}",
+  "@kidsZonePlagueHearSemantics": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "kidsZonePlaguePlaced": "{name} is in the right place",
+  "@kidsZonePlaguePlaced": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "kidsZonePlaguePreviewToggle": "Watch it once first",
+  "kidsZonePlagueStart": "Begin",
+  "kidsZonePlagueRoundDone": "Pharaoh's heart cracks!",
+  "kidsZonePlagueRoundDoneBody": "Round {round} of {total} is done. Egypt has not seen the last of this.",
+  "@kidsZonePlagueRoundDoneBody": {
+    "placeholders": { "round": { "type": "int" }, "total": { "type": "int" } }
+  },
+  "kidsZonePlagueNextRound": "Keep going",
+  "kidsZonePlagueDoneTitle": "Let my people go",
+  "kidsZonePlagueDoneBody": "The crown has fallen. Pharaoh finally lets God's people leave Egypt.",
+  "kidsZonePlagueCollectStars": "Collect my stars",
+  "kidsZonePlagueSayBlood": "I stretched out my staff, and the Nile turned to blood.",
+  "kidsZonePlagueSayFrogs": "Then frogs came up out of the river, into every house in Egypt.",
+  "kidsZonePlagueSayGnats": "The dust of the ground became gnats, all over the land.",
+  "kidsZonePlagueSayFlies": "Great swarms of flies filled Pharaoh's palace.",
+  "kidsZonePlagueSayLivestock": "The animals in the fields grew sick, but not one of ours.",
+  "kidsZonePlagueSayBoils": "Sores broke out on the people of Egypt, and Pharaoh still said no.",
+  "kidsZonePlagueSayHail": "Hail and fire fell together out of the sky.",
+  "kidsZonePlagueSayLocusts": "Locusts came in a cloud and ate every green thing left.",
+  "kidsZonePlagueSayDarkness": "Darkness covered Egypt for three days, so thick you could feel it.",
+  "kidsZonePlagueSayFirstborn": "After the last night, Pharaoh's crown fell, and he let my people go.",
+  "kidsZoneRiverStageLabel": "Stage {stage} of {total}",
+  "@kidsZoneRiverStageLabel": {
+    "placeholders": { "stage": { "type": "int" }, "total": { "type": "int" } }
+  },
+  "kidsZoneRiverDistance": "{metres} metres travelled",
+  "@kidsZoneRiverDistance": {
+    "placeholders": { "metres": { "type": "int" } }
+  },
+  "kidsZoneRiverExit": "Leave River Rescue",
+  "kidsZoneRiverBumpToast": "{count, plural, =0{A splash! No hearts left, but keep floating!} =1{A splash! One heart left — you can do it!} other{A splash! {count} hearts left — try again!}}",
+  "@kidsZoneRiverBumpToast": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "kidsZoneRiverFreshChanceToast": "Fresh hearts — a new chance for this stretch!",
+  "kidsZoneRiverHeartsLeft": "{count, plural, =1{1 heart left} other{{count} hearts left}}",
+  "@kidsZoneRiverHeartsLeft": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "kidsZoneRiverLotusCount": "{collected} of {total} lotus flowers",
+  "@kidsZoneRiverLotusCount": {
+    "placeholders": { "collected": { "type": "int" }, "total": { "type": "int" } }
+  },
+  "kidsZoneRiverLaneLeft": "Left",
+  "kidsZoneRiverLaneCenter": "Middle",
+  "kidsZoneRiverLaneRight": "Right",
+  "kidsZoneRiverHop": "Hop",
+  "kidsZoneRiverDuck": "Duck",
+  "kidsZoneRiverBoost": "Paddle",
+  "kidsZoneRiverShielded": "An angel is watching over you",
+  "kidsZoneRiverBoosting": "Paddling fast!",
+  "kidsZoneRiverBlessingTaken": "An angel blessing! You are safe for a moment.",
+  "kidsZoneRiverStageDone": "You made it!",
+  "kidsZoneRiverStageDoneBody": "Stage {stage} of {total} is behind you. The river runs faster ahead.",
+  "@kidsZoneRiverStageDoneBody": {
+    "placeholders": { "stage": { "type": "int" }, "total": { "type": "int" } }
+  },
+  "kidsZoneRiverNextStage": "Keep floating",
+  "kidsZoneRiverDoneTitle": "Safe in the princess's arms",
+  "kidsZoneRiverDoneBody": "Baby Moses floated all the way down the Nile, and the princess lifted him out of the water.",
+  "kidsZoneRiverCollectStars": "Collect my stars",
+
+  "@_comment_kids_zone_catalogue": "Adventure and stop copy for the Kids Zone hub. The catalogue in kids_zone_adventures.dart holds ids and structure only; these are resolved through kids_zone_strings.dart.",
+
+  "kidsZoneAdventureCreationGardenTitle": "Creation Garden",
+  "@kidsZoneAdventureCreationGardenTitle": {
+    "description": "Kids Zone adventure creation_garden: name"
+  },
+  "kidsZoneAdventureCreationGardenSubtitle": "Genesis — listen, learn, and play",
+  "@kidsZoneAdventureCreationGardenSubtitle": {
+    "description": "Kids Zone adventure creation_garden: one-line description"
+  },
+  "kidsZoneAdventureBattleOfSiddimTitle": "Battle of Siddim",
+  "@kidsZoneAdventureBattleOfSiddimTitle": {
+    "description": "Kids Zone adventure battle_of_siddim: name"
+  },
+  "kidsZoneAdventureBattleOfSiddimSubtitle": "Genesis 14 — Abraham's archery quest",
+  "@kidsZoneAdventureBattleOfSiddimSubtitle": {
+    "description": "Kids Zone adventure battle_of_siddim: one-line description"
+  },
+  "kidsZoneAdventureNoahsArkTitle": "Noah's Ark",
+  "@kidsZoneAdventureNoahsArkTitle": {
+    "description": "Kids Zone adventure noahs_ark: name"
+  },
+  "kidsZoneAdventureNoahsArkSubtitle": "Genesis 6-9 — a faithful journey",
+  "@kidsZoneAdventureNoahsArkSubtitle": {
+    "description": "Kids Zone adventure noahs_ark: one-line description"
+  },
+  "kidsZoneAdventureMosesNileTitle": "Baby Moses",
+  "@kidsZoneAdventureMosesNileTitle": {
+    "description": "Kids Zone adventure moses_nile: name"
+  },
+  "kidsZoneAdventureMosesNileSubtitle": "Exodus 1-2 - down the river to the princess",
+  "@kidsZoneAdventureMosesNileSubtitle": {
+    "description": "Kids Zone adventure moses_nile: one-line description"
+  },
+  "kidsZoneAdventureHeroesPathTitle": "Heroes Path",
+  "@kidsZoneAdventureHeroesPathTitle": {
+    "description": "Kids Zone adventure heroes_path: name"
+  },
+  "kidsZoneAdventureHeroesPathSubtitle": "Coming soon — more Bible adventures",
+  "@kidsZoneAdventureHeroesPathSubtitle": {
+    "description": "Kids Zone adventure heroes_path: one-line description"
+  },
+  "kidsZoneAdventureWiseKingsTitle": "Wise Kings",
+  "@kidsZoneAdventureWiseKingsTitle": {
+    "description": "Kids Zone adventure wise_kings: name"
+  },
+  "kidsZoneAdventureWiseKingsSubtitle": "Coming soon",
+  "@kidsZoneAdventureWiseKingsSubtitle": {
+    "description": "Kids Zone adventure wise_kings: one-line description"
+  },
+
+  "kidsZoneStopCreationIntroTitle": "Introduction",
+  "@kidsZoneStopCreationIntroTitle": {
+    "description": "Kids Zone stop creation_intro: name"
+  },
+  "kidsZoneStopCreationIntroTeaser": "Animated story — day by day",
+  "@kidsZoneStopCreationIntroTeaser": {
+    "description": "Kids Zone stop creation_intro: one-line teaser"
+  },
+  "kidsZoneStopGarden1Title": "Level 1 — God's Questions",
+  "@kidsZoneStopGarden1Title": {
+    "description": "Kids Zone stop garden_1: name"
+  },
+  "kidsZoneStopGarden1Teaser": "Listen & answer about Creation",
+  "@kidsZoneStopGarden1Teaser": {
+    "description": "Kids Zone stop garden_1: one-line teaser"
+  },
+  "kidsZoneStopGarden2Title": "Level 2 — Connect Creations",
+  "@kidsZoneStopGarden2Title": {
+    "description": "Kids Zone stop garden_2: name"
+  },
+  "kidsZoneStopGarden2Teaser": "Match days to what God made",
+  "@kidsZoneStopGarden2Teaser": {
+    "description": "Kids Zone stop garden_2: one-line teaser"
+  },
+  "kidsZoneStopGarden3Title": "Level 3 — Jumbled Challenge",
+  "@kidsZoneStopGarden3Title": {
+    "description": "Kids Zone stop garden_3: name"
+  },
+  "kidsZoneStopGarden3Teaser": "Unscramble creation sentences",
+  "@kidsZoneStopGarden3Teaser": {
+    "description": "Kids Zone stop garden_3: one-line teaser"
+  },
+  "kidsZoneStopSiddimIntroTitle": "Introduction",
+  "@kidsZoneStopSiddimIntroTitle": {
+    "description": "Kids Zone stop siddim_intro: name"
+  },
+  "kidsZoneStopSiddimIntroTeaser": "The valley, the four kings, and Lot",
+  "@kidsZoneStopSiddimIntroTeaser": {
+    "description": "Kids Zone stop siddim_intro: one-line teaser"
+  },
+  "kidsZoneStopSiddim1Title": "Level 1 — Defend the Valley",
+  "@kidsZoneStopSiddim1Title": {
+    "description": "Kids Zone stop siddim_1: name"
+  },
+  "kidsZoneStopSiddim1Teaser": "Rounds 1-2 — learn to aim and shoot",
+  "@kidsZoneStopSiddim1Teaser": {
+    "description": "Kids Zone stop siddim_1: one-line teaser"
+  },
+  "kidsZoneStopSiddim2Title": "Level 2 — The Night Rescue",
+  "@kidsZoneStopSiddim2Title": {
+    "description": "Kids Zone stop siddim_2: name"
+  },
+  "kidsZoneStopSiddim2Teaser": "Rounds 3-5 — faster, trickier soldiers",
+  "@kidsZoneStopSiddim2Teaser": {
+    "description": "Kids Zone stop siddim_2: one-line teaser"
+  },
+  "kidsZoneStopSiddim3Title": "Level 3 — King's Round",
+  "@kidsZoneStopSiddim3Title": {
+    "description": "Kids Zone stop siddim_3: name"
+  },
+  "kidsZoneStopSiddim3Teaser": "Round 6 — King Chedorlaomer himself",
+  "@kidsZoneStopSiddim3Teaser": {
+    "description": "Kids Zone stop siddim_3: one-line teaser"
+  },
+  "kidsZoneStopArkIntroTitle": "Introduction",
+  "@kidsZoneStopArkIntroTitle": {
+    "description": "Kids Zone stop ark_intro: name"
+  },
+  "kidsZoneStopArkIntroTeaser": "Noah, the ark, and God's promise",
+  "@kidsZoneStopArkIntroTeaser": {
+    "description": "Kids Zone stop ark_intro: one-line teaser"
+  },
+  "kidsZoneStopArk1Title": "Level 1 — Ark Builder",
+  "@kidsZoneStopArk1Title": {
+    "description": "Kids Zone stop ark_1: name"
+  },
+  "kidsZoneStopArk1Teaser": "Drag the timber into place",
+  "@kidsZoneStopArk1Teaser": {
+    "description": "Kids Zone stop ark_1: one-line teaser"
+  },
+  "kidsZoneStopArk2Title": "Level 2 — Two by Two",
+  "@kidsZoneStopArk2Title": {
+    "description": "Kids Zone stop ark_2: name"
+  },
+  "kidsZoneStopArk2Teaser": "Memory match — find each animal's mate",
+  "@kidsZoneStopArk2Teaser": {
+    "description": "Kids Zone stop ark_2: one-line teaser"
+  },
+  "kidsZoneStopArk3Title": "Level 3 — Animal Care",
+  "@kidsZoneStopArk3Title": {
+    "description": "Kids Zone stop ark_3: name"
+  },
+  "kidsZoneStopArk3Teaser": "Feed, clean and comfort the animals",
+  "@kidsZoneStopArk3Teaser": {
+    "description": "Kids Zone stop ark_3: one-line teaser"
+  },
+  "kidsZoneStopMosesIntroTitle": "Introduction",
+  "@kidsZoneStopMosesIntroTitle": {
+    "description": "Kids Zone stop moses_intro: name"
+  },
+  "kidsZoneStopMosesIntroTeaser": "Pharaoh, a basket of reeds, and a princess",
+  "@kidsZoneStopMosesIntroTeaser": {
+    "description": "Kids Zone stop moses_intro: one-line teaser"
+  },
+  "kidsZoneStopMoses1Title": "Level 1 - River Rescue",
+  "@kidsZoneStopMoses1Title": {
+    "description": "Kids Zone stop moses_1: name"
+  },
+  "kidsZoneStopMoses1Teaser": "Steer the basket past reeds, logs and sleepy crocodiles",
+  "@kidsZoneStopMoses1Teaser": {
+    "description": "Kids Zone stop moses_1: one-line teaser"
+  },
+  "kidsZoneStopMoses2Title": "Level 2 - Plagues of Egypt",
+  "@kidsZoneStopMoses2Title": {
+    "description": "Kids Zone stop moses_2: name"
+  },
+  "kidsZoneStopMoses2Teaser": "Put the ten plagues in order and watch Egypt answer",
+  "@kidsZoneStopMoses2Teaser": {
+    "description": "Kids Zone stop moses_2: one-line teaser"
+  },
+  "kidsZoneStopMoses3Title": "Level 3 - Crossing the Sea",
+  "@kidsZoneStopMoses3Title": {
+    "description": "Kids Zone stop moses_3: name"
+  },
+  "kidsZoneStopMoses3Teaser": "Part the water, walk across, and send the chariots home",
+  "@kidsZoneStopMoses3Teaser": {
+    "description": "Kids Zone stop moses_3: one-line teaser"
+  },
+  "kidsZoneStopHeroes2Title": "Young David",
+  "@kidsZoneStopHeroes2Title": {
+    "description": "Kids Zone stop heroes_2: name"
+  },
+  "kidsZoneStopHeroes2Teaser": "Explore the pasture",
+  "@kidsZoneStopHeroes2Teaser": {
+    "description": "Kids Zone stop heroes_2: one-line teaser"
+  },
+  "kidsZoneStopKings1Title": "Solomon's Gift",
+  "@kidsZoneStopKings1Title": {
+    "description": "Kids Zone stop kings_1: name"
+  },
+  "kidsZoneStopKings1Teaser": "Story adventure",
+  "@kidsZoneStopKings1Teaser": {
+    "description": "Kids Zone stop kings_1: one-line teaser"
+  }
+}

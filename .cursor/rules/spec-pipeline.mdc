@@ -1,0 +1,25 @@
+---
+description: Mobile-app spec pipeline — when to interview, delegate, and gate
+alwaysApply: true
+---
+
+# Spec pipeline
+
+Follow this staged pipeline. Do not skip gates. Do not generate app code before `approval.json` exists with `approved: true`. Do not generate CI/CD.
+
+## Live in this conversation (never delegate)
+
+- New app / gather requirements → follow the `requirements-interview` skill
+- Human approval of the five specs → follow the `approve-gate` skill
+
+## Delegate to subagents
+
+1. After `requirements.json` → `architecture-agent`
+2. After `architecture.html` + `product-overview.pdf` → `ux-design-agent`
+3. After `design-spec.md` → `analytics-agent` and `qa-test-plan-agent` (parallel)
+4. After all five specs exist → stop and run `/approve-gate` (live)
+5. After `approval.json` → `code-generator-agent` (refuse if unapproved)
+6. After scaffold exists → `security-compliance-agent` and `flow-validation-agent` (parallel)
+7. After both reports exist → `implementation-agent`
+
+Spec-stage agents produce documents only. Code Generator writes real working code by default; Implementation resolves handoffs and gaps.
